@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read/write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Events are readable by everyone, writable by authenticated users
+    match /events/{eventId} {
+      allow read: if true;
+      allow create: if request.auth != null && 
+        request.auth.uid == resource.data.createdBy &&
+        validateEventData(request.resource.data);
+      allow update: if request.auth != null && 
+        request.auth.uid == resource.data.createdBy;
+      allow delete: if request.auth != null && 
+        request.auth.uid == resource.data.createdBy;
+    }
+    
+    // Categories are read-only for clients
+    match /categories/{categoryId} {
+      allow read: if true;
+    }
+    
+    // Subscriptions are private to user
+    match /subscriptions/{subscriptionId} {
+      allow read, write: if request.auth != null && 
+        request.auth.uid == resource.data.userId;
+    }
+    
+    // Featured ads are read-only for clients
+    match /featuredAds/{adId} {
+      allow read: if resource.data.isActive == true;
+    }
+  }
+  
+  function validateEventData(data) {
+    return data.title is string && data.title.size() > 0 &&
+           data.type is string && data.type.size() > 0 &&
+           data.date is timestamp &&
+           data.description is string && 
+           data.description.size() >= 20 && 
+           data.description.size() <= 140;
+  }
+}

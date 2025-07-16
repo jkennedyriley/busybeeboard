@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BusyBee Board - Find Events Anywhere</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .brand-logo {
+            max-height: 120px;
+            width: auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .brand-overlay {
+            position: absolute;
+            top: 60px;
+            left: 40px;
+            z-index: 5;
+        }
+
+        .brand-overlay img {
+            height: 150px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px 40px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 42px;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 50px;
+            font-weight: 400;
+        }
+
+        .search-container {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            max-width: 600px;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .search-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            text-align: left;
+        }
+
+        .search-input, .search-select {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .search-input:focus, .search-select:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .categories-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .category-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .category-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #FFD700;
+        }
+
+        .category-label {
+            font-size: 14px;
+            color: #000;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .search-button {
+            background: #FFD700;
+            border: 2px solid #000;
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .search-button:hover {
+            background: #000;
+            color: #FFD700;
+        }
+
+        .search-button:active {
+            transform: translateY(1px);
+        }
+
+        .location-status {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .bee-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+
+        .instant-access {
+            background: #FFD700;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .brand-logo {
+                max-height: 50px;
+            }
+
+            .main-title {
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .search-container {
+                padding: 24px;
+                margin: 0 16px 40px;
+            }
+
+            .categories-grid {
+                flex-direction: column;
+            }
+
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 28px;
+            }
+            
+            .search-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" 
+             alt="BusyBee Board" 
+             class="brand-logo">
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="showCreateEvent()">Create Event</button>
+            <button class="nav-btn" onclick="showSignIn()">Sign In</button>
+        </div>
+    </header>
+
+    <div class="brand-overlay">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" 
+             alt="BusyBee Board - A FREE community events Board!">
+    </div>
+
+    <main class="main-content">
+        <div class="instant-access">🔓 Instant Access - No Sign-Up Required</div>
+        
+        <h1 class="main-title">Find Events Anywhere</h1>
+        <p class="subtitle">Search local events in any city or location</p>
+
+        <div class="search-container">
+            <form class="search-form" onsubmit="searchEvents(event)">
+                <div class="input-group">
+                    <label class="input-label" for="location">📍 Location</label>
+                    <input 
+                        type="text" 
+                        id="location" 
+                        class="search-input" 
+                        placeholder="Enter city or zip code"
+                        value="Detecting your location..."
+                        readonly
+                    >
+                    <div class="location-status" id="location-status">
+                        Requesting location permission...
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label" for="date-range">📅 When</label>
+                    <select id="date-range" class="search-select">
+                        <option value="today">Today</option>
+                        <option value="tomorrow">Tomorrow</option>
+                        <option value="weekend">This Weekend</option>
+                        <option value="custom">Custom Date Range</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">🎯 Event Types</label>
+                    <div class="categories-grid">
+                        <div class="category-item">
+                            <input type="checkbox" id="all-events" class="category-checkbox" checked onchange="toggleAllCategories()">
+                            <label for="all-events" class="category-label">All Events</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="music" class="category-checkbox" name="category" value="Music & Nightlife">
+                            <label for="music" class="category-label">Music & Nightlife</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="arts" class="category-checkbox" name="category" value="Arts & Culture">
+                            <label for="arts" class="category-label">Arts & Culture</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="health" class="category-checkbox" name="category" value="Health & Wellness">
+                            <label for="health" class="category-label">Health & Wellness</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="family" class="category-checkbox" name="category" value="Family & Kids">
+                            <label for="family" class="category-label">Family & Kids</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="markets" class="category-checkbox" name="category" value="Markets & Popups">
+                            <label for="markets" class="category-label">Markets & Popups</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="talks" class="category-checkbox" name="category" value="Talks & Meetups">
+                            <label for="talks" class="category-label">Talks & Meetups</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="education" class="category-checkbox" name="category" value="Education & Workshops">
+                            <label for="education" class="category-label">Education & Workshops</label>
+                        </div>
+                        <div class="category-item">
+                            <input type="checkbox" id="community" class="category-checkbox" name="category" value="Causes & Community">
+                            <label for="community" class="category-label">Causes & Community</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-button">
+                    Search Events
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // Location detection
+        function detectLocation() {
+            const locationInput = document.getElementById('location');
+            const locationStatus = document.getElementById('location-status');
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // In a real app, you'd reverse geocode these coordinates
+                        locationInput.value = "Greenville, SC";
+                        locationInput.removeAttribute('readonly');
+                        locationStatus.textContent = "✓ Using your current location";
+                        locationStatus.style.color = '#28a745';
+                    },
+                    (error) => {
+                        locationInput.value = "";
+                        locationInput.placeholder = "Enter city or zip code";
+                        locationInput.removeAttribute('readonly');
+                        locationStatus.textContent = "Enter your location manually";
+                        locationStatus.style.color = '#666';
+                    }
+                );
+            } else {
+                locationInput.value = "";
+                locationInput.placeholder = "Enter city or zip code";
+                locationInput.removeAttribute('readonly');
+                locationStatus.textContent = "Location services not available";
+            }
+        }
+
+        // Category selection logic
+        function toggleAllCategories() {
+            const allCheckbox = document.getElementById('all-events');
+            const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
+            
+            categoryCheckboxes.forEach(checkbox => {
+                checkbox.checked = allCheckbox.checked;
+            });
+        }
+
+        // Update "All Events" when individual categories change
+        document.querySelectorAll('input[name="category"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const allCheckbox = document.getElementById('all-events');
+                const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
+                const checkedCategories = document.querySelectorAll('input[name="category"]:checked');
+                
+                if (checkedCategories.length === categoryCheckboxes.length) {
+                    allCheckbox.checked = true;
+                } else if (checkedCategories.length === 0) {
+                    allCheckbox.checked = false;
+                } else {
+                    allCheckbox.checked = false;
+                }
+            });
+        });
+
+        // Search functionality
+        function searchEvents(event) {
+            event.preventDefault();
+            
+            const location = document.getElementById('location').value;
+            const dateRange = document.getElementById('date-range').value;
+            const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'))
+                .map(cb => cb.value);
+            
+            if (!location.trim()) {
+                alert('Please enter a location to search for events.');
+                return;
+            }
+            
+            // This will eventually connect to your Firebase backend
+            console.log('Searching for events:', {
+                location,
+                dateRange,
+                categories: selectedCategories.length ? selectedCategories : ['All']
+            });
+            
+            // Placeholder - will be replaced with real search results
+            alert(`🔍 Searching for events in ${location}!\n\n📅 Date: ${dateRange}\n🎯 Categories: ${selectedCategories.length ? selectedCategories.join(', ') : 'All Events'}\n\n✅ This will show real results once connected to your Firebase backend!`);
+        }
+
+        // Navigation functions
+        function showCreateEvent() {
+            alert('🎉 Create Event page coming soon!\n\nThis will let users post their own events to the platform.');
+        }
+
+        function showSignIn() {
+            alert('🔐 Sign In page coming soon!\n\nUsers can create accounts to post events and manage their listings.');
+        }
+
+        // Initialize location detection when page loads
+        window.addEventListener('load', detectLocation);
+    </script>
+</body>
+</html>
