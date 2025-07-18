@@ -22,29 +22,22 @@
 
         .header {
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-end;
             align-items: center;
             padding: 20px 40px;
             background: white;
             border-bottom: 1px solid #f0f0f0;
         }
 
-        .brand-logo {
-            max-height: 120px;
-            width: auto;
-            position: relative;
-            z-index: 10;
-        }
-
         .brand-overlay {
             position: absolute;
-            top: 60px;
+            top: 10px;        /* Start higher up in the header */
             left: 40px;
-            z-index: 5;
+            z-index: 15;      /* Higher z-index to overlay the header border */
         }
 
         .brand-overlay img {
-            height: 150px;
+            height: 180px;
             width: auto;
         }
 
@@ -267,10 +260,6 @@
 </head>
 <body>
     <header class="header">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" 
-             alt="BusyBee Board" 
-             class="brand-logo">
-        
         <div class="nav-buttons">
             <button class="nav-btn" onclick="showCreateEvent()">Create Event</button>
             <button class="nav-btn" onclick="showSignIn()">Sign In</button>
@@ -278,87 +267,86 @@
     </header>
 
     <div class="brand-overlay">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" 
+        <img src="../assets/brandmark.svg" 
              alt="BusyBee Board - A FREE community events Board!">
     </div>
 
     <main class="main-content">
-        <div class="instant-access">🔓 Instant Access - No Sign-Up Required</div>
+        <div class="instant-access">Instant Access • No Signup Required</div>
         
-        <h1 class="main-title">Find Events Anywhere</h1>
-        <p class="subtitle">Search local events in any city or location</p>
+        <h1 class="main-title">Find events anywhere</h1>
+        <p class="subtitle">Discover what's happening in your community today</p>
 
         <div class="search-container">
             <form class="search-form" onsubmit="searchEvents(event)">
                 <div class="input-group">
-                    <label class="input-label" for="location">📍 Location</label>
+                    <label for="location" class="input-label">📍 Location</label>
                     <input 
                         type="text" 
                         id="location" 
                         class="search-input" 
                         placeholder="Enter city or zip code"
-                        value="Detecting your location..."
                         readonly
                     >
-                    <div class="location-status" id="location-status">
-                        Requesting location permission...
-                    </div>
+                    <div id="location-status" class="location-status">Detecting your location...</div>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label" for="date-range">📅 When</label>
+                    <label for="date-range" class="input-label">📅 When</label>
                     <select id="date-range" class="search-select">
                         <option value="today">Today</option>
                         <option value="tomorrow">Tomorrow</option>
-                        <option value="weekend">This Weekend</option>
-                        <option value="custom">Custom Date Range</option>
+                        <option value="this-week" selected>This Week</option>
+                        <option value="this-weekend">This Weekend</option>
+                        <option value="next-week">Next Week</option>
+                        <option value="this-month">This Month</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label">🎯 Event Types</label>
+                    <label class="input-label">🎯 Event Categories</label>
                     <div class="categories-grid">
                         <div class="category-item">
-                            <input type="checkbox" id="all-events" class="category-checkbox" checked onchange="toggleAllCategories()">
+                            <input type="checkbox" id="all-events" class="category-checkbox" onchange="toggleAllCategories()" checked>
                             <label for="all-events" class="category-label">All Events</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="music" class="category-checkbox" name="category" value="Music & Nightlife">
-                            <label for="music" class="category-label">Music & Nightlife</label>
+                            <input type="checkbox" name="category" value="Music & Nightlife" class="category-checkbox" checked>
+                            <label class="category-label">🎵 Music & Nightlife</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="arts" class="category-checkbox" name="category" value="Arts & Culture">
-                            <label for="arts" class="category-label">Arts & Culture</label>
+                            <input type="checkbox" name="category" value="Arts & Culture" class="category-checkbox" checked>
+                            <label class="category-label">🎨 Arts & Culture</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="health" class="category-checkbox" name="category" value="Health & Wellness">
-                            <label for="health" class="category-label">Health & Wellness</label>
+                            <input type="checkbox" name="category" value="Health & Wellness" class="category-checkbox" checked>
+                            <label class="category-label">🧘 Health & Wellness</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="family" class="category-checkbox" name="category" value="Family & Kids">
-                            <label for="family" class="category-label">Family & Kids</label>
+                            <input type="checkbox" name="category" value="Family & Kids" class="category-checkbox" checked>
+                            <label class="category-label">👨‍👩‍👧‍👦 Family & Kids</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="markets" class="category-checkbox" name="category" value="Markets & Popups">
-                            <label for="markets" class="category-label">Markets & Popups</label>
+                            <input type="checkbox" name="category" value="Markets & Popups" class="category-checkbox" checked>
+                            <label class="category-label">🛍️ Markets & Popups</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="talks" class="category-checkbox" name="category" value="Talks & Meetups">
-                            <label for="talks" class="category-label">Talks & Meetups</label>
+                            <input type="checkbox" name="category" value="Talks & Meetups" class="category-checkbox" checked>
+                            <label class="category-label">💬 Talks & Meetups</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="education" class="category-checkbox" name="category" value="Education & Workshops">
-                            <label for="education" class="category-label">Education & Workshops</label>
+                            <input type="checkbox" name="category" value="Education & Workshops" class="category-checkbox" checked>
+                            <label class="category-label">📚 Education & Workshops</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="community" class="category-checkbox" name="category" value="Causes & Community">
-                            <label for="community" class="category-label">Causes & Community</label>
+                            <input type="checkbox" name="category" value="Causes & Community" class="category-checkbox" checked>
+                            <label class="category-label">🤝 Causes & Community</label>
                         </div>
                     </div>
                 </div>
 
                 <button type="submit" class="search-button">
-                    Search Events
+                    🔍 Find Events
                 </button>
             </form>
         </div>
@@ -374,17 +362,16 @@
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         // In a real app, you'd reverse geocode these coordinates
-                        locationInput.value = "Greenville, SC";
+                        locationInput.value = "Your Current Location";
                         locationInput.removeAttribute('readonly');
-                        locationStatus.textContent = "✓ Using your current location";
-                        locationStatus.style.color = '#28a745';
+                        locationStatus.textContent = "✅ Location detected! You can edit if needed.";
+                        locationStatus.style.color = "#28a745";
                     },
                     (error) => {
                         locationInput.value = "";
                         locationInput.placeholder = "Enter city or zip code";
                         locationInput.removeAttribute('readonly');
-                        locationStatus.textContent = "Enter your location manually";
-                        locationStatus.style.color = '#666';
+                        locationStatus.textContent = "Location services not available";
                     }
                 );
             } else {
