@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - BusyBee Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+        }
+
+        /* Header Styles - matching your other pages */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-overlay {
+            position: fixed;
+            top: 10px;
+            left: 40px;
+            z-index: 1015;
+        }
+
+        .brand-overlay img {
+            height: 180px;
+            width: auto;
+            transition: opacity 0.2s ease;
+        }
+
+        .brand-overlay a:hover img {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 200px 20px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .signup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .signup-title {
+            font-size: 32px;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .signup-subtitle {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Account Type Selection */
+        .account-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .account-type {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .account-type:hover {
+            border-color: #FFD700;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+
+        .account-type.selected {
+            border-color: #FFD700;
+            background: #fffdf0;
+        }
+
+        .account-type.popular {
+            border-color: #FFD700;
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #FFD700;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .account-type-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .account-type-icon {
+            font-size: 24px;
+        }
+
+        .account-type-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .account-type-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .account-type-period {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .account-type-features {
+            list-style: none;
+            margin-bottom: 16px;
+        }
+
+        .account-type-features li {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .account-type-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .account-type-description {
+            font-size: 12px;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .signup-input {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .signup-input:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .signup-input.error {
+            border-color: #dc3545;
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: #dc3545;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #FFD700;
+            margin-top: 2px;
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .checkbox-label a {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .payment-summary {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .payment-summary h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 12px;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 600;
+            padding-top: 12px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 12px;
+        }
+
+        #card-element {
+            background: white;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        #card-element.StripeElement--focus {
+            border-color: #FFD700;
+        }
+
+        /* Submit Button */
+        .signup-btn {
+            background: #FFD700;
+            border: 2px solid #000;
+            padding: 18px 36px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 100%;
+            margin-top: 24px;
+        }
+
+        .signup-btn:hover {
+            background: #000;
+            color: #FFD700;
+        }
+
+        .signup-btn:disabled {
+            background: #ccc;
+            border-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .signin-link {
+            text-align: center;
+            margin-top: 24px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .signin-link a {
+            color: #000;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signin-link a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .brand-overlay {
+                position: relative;
+                top: 0;
+                left: 0;
+                order: -1;
+            }
+
+            .brand-overlay img {
+                height: 100px;
+            }
+
+            .nav-buttons {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 180px 16px 20px;
+            }
+
+            .account-types {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 24px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .signup-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="goToSignIn()">Sign In</button>
+            <button class="nav-btn" onclick="goToHome()">← Back to Search</button>
+        </div>
+    </header>
+
+    <div class="brand-overlay">
+        <a href="index.html">
+            <img src="../assets/brandmark.svg" 
+                 alt="BusyBee Board - A FREE community events Board!" 
+                 style="cursor: pointer;"
+                 onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <main class="main-content">
+        <div class="signup-header">
+            <h1 class="signup-title">Join BusyBee Board</h1>
+            <p class="signup-subtitle">Choose your account type and start connecting with your community</p>
+        </div>
+
+        <!-- Account Type Selection -->
+        <div class="account-types">
+            <div class="account-type" data-type="customer" onclick="selectAccountType('customer')">
+                <div class="account-type-header">
+                    <div class="account-type-icon">🐝</div>
+                    <div class="account-type-name">Customer</div>
+                </div>
+                <div class="account-type-price">Free</div>
+                <div class="account-type-period">Always free</div>
+                <ul class="account-type-features">
+                    <li>Post up to 5 events per month</li>
+                    <li>Browse all community events</li>
+                    <li>Basic event management</li>
+                    <li>Email notifications</li>
+                </ul>
+                <div class="account-type-description">Perfect for occasional event organizers</div>
+            </div>
+
+            <div class="account-type popular" data-type="promoter" onclick="selectAccountType('promoter')">
+                <div class="popular-badge">Popular</div>
+                <div class="account-type-header">
+                    <div class="account-type-icon">📢</div>
+                    <div class="account-type-name">Promoter</div>
+                </div>
+                <div class="account-type-price">$19.99</div>
+                <div class="account-type-period">per month</div>
+                <ul class="account-type-features">
+                    <li>Post up to 1 event per day</li>
+                    <li>Priority customer support</li>
+                    <li>Advanced event analytics</li>
+                    <li>Featured event options</li>
+                    <li>Social media integration</li>
+                </ul>
+                <div class="account-type-description">Ideal for regular event organizers and small businesses</div>
+            </div>
+
+            <div class="account-type" data-type="agent" onclick="selectAccountType('agent')">
+                <div class="account-type-header">
+                    <div class="account-type-icon">🚀</div>
+                    <div class="account-type-name">Agent</div>
+                </div>
+                <div class="account-type-price">$49.99</div>
+                <div class="account-type-period">per month</div>
+                <ul class="account-type-features">
+                    <li>Unlimited event posting</li>
+                    <li>Multiple events per day</li>
+                    <li>Multi-location support</li>
+                    <li>Priority listing placement</li>
+                    <li>Dedicated account manager</li>
+                    <li>API access</li>
+                </ul>
+                <div class="account-type-description">Perfect for agencies, venues, and enterprise organizers</div>
+            </div>
+        </div>
+
+        <!-- Sign Up Form -->
+        <div class="form-container">
+            <form id="signup-form" onsubmit="handleSignUp(event)">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h2 class="form-section-title">Personal Information</h2>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="firstName" class="input-label">First Name *</label>
+                            <input 
+                                type="text" 
+                                id="firstName" 
+                                class="signup-input" 
+                                placeholder="Enter your first name"
+                                required
+                            >
+                            <div class="error-message" id="firstName-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="lastName" class="input-label">Last Name *</label>
+                            <input 
+                                type="text" 
+                                id="lastName" 
+                                class="signup-input" 
+                                placeholder="Enter your last name"
+                                required
+                            >
+                            <div class="error-message" id="lastName-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="email" class="input-label">Email Address *</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                class="signup-input" 
+                                placeholder="Enter your email"
+                                required
+                            >
+                            <div class="error-message" id="email-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="password" class="input-label">Password *</label>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                class="signup-input" 
+                                placeholder="Create a secure password"
+                                required
+                            >
+                            <div class="error-message" id="password-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="country" class="input-label">Country *</label>
+                            <select 
+                                id="country" 
+                                class="signup-input" 
+                                required
+                                onchange="updateCityPlaceholder()"
+                            >
+                                <option value="">Select your country</option>
+                                <option value="US">United States</option>
+                                <option value="CA">Canada</option>
+                                <option value="GB">United Kingdom</option>
+                                <option value="AU">Australia</option>
+                                <option value="DE">Germany</option>
+                                <option value="FR">France</option>
+                                <option value="IT">Italy</option>
+                                <option value="ES">Spain</option>
+                                <option value="NL">Netherlands</option>
+                                <option value="BE">Belgium</option>
+                                <option value="CH">Switzerland</option>
+                                <option value="AT">Austria</option>
+                                <option value="IE">Ireland</option>
+                                <option value="SE">Sweden</option>
+                                <option value="NO">Norway</option>
+                                <option value="DK">Denmark</option>
+                                <option value="FI">Finland</option>
+                                <option value="NZ">New Zealand</option>
+                                <option value="JP">Japan</option>
+                                <option value="SG">Singapore</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="error-message" id="country-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="city" class="input-label">City *</label>
+                            <input 
+                                type="text" 
+                                id="city" 
+                                class="signup-input" 
+                                placeholder="Enter your city"
+                                required
+                            >
+                            <div class="error-message" id="city-error"></div>
+                        </div>
+                        <div class="input-group">
+                            <label for="postalCode" class="input-label"><span id="postal-label">Postal Code</span> *</label>
+                            <input 
+                                type="text" 
+                                id="postalCode" 
+                                class="signup-input" 
+                                placeholder="Enter your postal code"
+                                required
+                            >
+                            <div class="error-message" id="postalCode-error"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organization Information (for Promoter/Agent) -->
+                <div class="form-section" id="organization-section" style="display: none;">
+                    <h2 class="form-section-title">Organization Information</h2>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="organizationName" class="input-label">Organization Name</label>
+                            <input 
+                                type="text" 
+                                id="organizationName" 
+                                class="signup-input" 
+                                placeholder="Your company or organization name"
+                            >
+                        </div>
+                        <div class="input-group">
+                            <label for="website" class="input-label">Website</label>
+                            <input 
+                                type="url" 
+                                id="website" 
+                                class="signup-input" 
+                                placeholder="https://yourwebsite.com"
+                            >
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Section (for Promoter/Agent) -->
+                <div class="payment-section" id="payment-section" style="display: none;">
+                    <h2 class="form-section-title">Payment Information</h2>
+                    <div class="payment-summary" id="payment-summary">
+                        <h3>Order Summary</h3>
+                        <div class="payment-item">
+                            <span id="plan-name">Promoter Plan</span>
+                            <span id="plan-price">$19.99/month</span>
+                        </div>
+                        <div class="payment-total">
+                            <span>Total</span>
+                            <span id="total-price">$19.99/month</span>
+                        </div>
+                    </div>
+                    
+                    <div id="card-element">
+                        <!-- Stripe Elements will create form elements here -->
+                    </div>
+                    <div id="card-errors" class="error-message"></div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="checkbox-group">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms" class="checkbox-label">
+                        I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and 
+                        <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="marketing">
+                    <label for="marketing" class="checkbox-label">
+                        I'd like to receive updates about new features and community events
+                    </label>
+                </div>
+
+                <button type="submit" class="signup-btn" id="signup-btn">
+                    Create Free Account
+                </button>
+
+                <div class="loading" id="loading">
+                    Creating your account...
+                </div>
+            </form>
+
+            <div class="signin-link">
+                Already have an account? <a href="signin.html">Sign in here</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let selectedAccountType = 'customer';
+        let stripe, elements, cardElement;
+        let stripeLoadAttempts = 0;
+        let maxStripeAttempts = 10;
+
+        // Initialize Stripe with better error handling
+        function initializeStripe() {
+            stripeLoadAttempts++;
+            
+            // Check if Stripe is loaded
+            if (typeof Stripe === 'undefined') {
+                if (stripeLoadAttempts < maxStripeAttempts) {
+                    console.log(`Stripe not loaded yet, retrying... (${stripeLoadAttempts}/${maxStripeAttempts})`);
+                    setTimeout(initializeStripe, 200);
+                    return;
+                } else {
+                    console.log('Stripe failed to load after multiple attempts - payments will be disabled');
+                    return;
+                }
+            }
+
+            try {
+                console.log('Stripe loaded successfully - payments disabled until publishable key is added');
+                // TODO: Replace with your actual Stripe publishable key
+                // stripe = Stripe('pk_test_your_stripe_publishable_key_here');
+                // elements = stripe.elements();
+
+                // Create card element placeholder
+                // cardElement = elements.create('card', {
+                //     style: {
+                //         base: {
+                //             fontSize: '16px',
+                //             color: '#424770',
+                //             '::placeholder': {
+                //                 color: '#aab7c4',
+                //             },
+                //         },
+                //     },
+                // });
+
+            } catch (error) {
+                console.error('Stripe initialization error:', error);
+            }
+        }
+
+        // Load Stripe script dynamically to avoid loading issues
+        function loadStripe() {
+            // Check if script already exists
+            if (document.querySelector('script[src*="js.stripe.com"]')) {
+                initializeStripe();
+                return;
+            }
+
+            const script = document.createElement('script');
+            script.src = 'https://js.stripe.com/v3/';
+            script.onload = function() {
+                console.log('Stripe script loaded');
+                initializeStripe();
+            };
+            script.onerror = function() {
+                console.error('Failed to load Stripe script - payments will be disabled');
+            };
+            document.head.appendChild(script);
+        }
+
+        // Account type selection
+        function selectAccountType(type) {
+            selectedAccountType = type;
+            
+            // Update visual selection
+            document.querySelectorAll('.account-type').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`[data-type="${type}"]`).classList.add('selected');
+
+            // Show/hide relevant sections
+            const orgSection = document.getElementById('organization-section');
+            const paymentSection = document.getElementById('payment-section');
+            const signupBtn = document.getElementById('signup-btn');
+
+            if (type === 'customer') {
+                orgSection.style.display = 'none';
+                paymentSection.style.display = 'none';
+                signupBtn.textContent = 'Create Free Account';
+            } else {
+                orgSection.style.display = 'block';
+                paymentSection.style.display = 'block';
+                
+                // Update payment summary
+                updatePaymentSummary(type);
+                
+                // Mount Stripe card element if not already mounted
+                if (stripe && cardElement && !cardElement._mounted) {
+                    cardElement.mount('#card-element');
+                } else if (!stripe) {
+                    // Show placeholder message if Stripe isn't configured
+                    document.getElementById('card-element').innerHTML = 
+                        '<div style="padding: 16px; color: #666; font-style: italic;">Payment processing will be available once Stripe is configured</div>';
+                }
+
+                if (type === 'promoter') {
+                    signupBtn.textContent = 'Subscribe to Promoter ($19.99/month)';
+                } else {
+                    signupBtn.textContent = 'Subscribe to Agent ($49.99/month)';
+                }
+            }
+        }
+
+        function updatePaymentSummary(type) {
+            const planName = document.getElementById('plan-name');
+            const planPrice = document.getElementById('plan-price');
+            const totalPrice = document.getElementById('total-price');
+
+            if (type === 'promoter') {
+                planName.textContent = 'Promoter Plan';
+                planPrice.textContent = '$19.99/month';
+                totalPrice.textContent = '$19.99/month';
+            } else if (type === 'agent') {
+                planName.textContent = 'Agent Plan';
+                planPrice.textContent = '$49.99/month';
+                totalPrice.textContent = '$49.99/month';
+            }
+        }
+
+        // Form validation
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.querySelectorAll('.signup-input').forEach(el => el.classList.remove('error'));
+        }
+
+        function showError(field, message) {
+            const errorElement = document.getElementById(`${field}-error`);
+            const inputElement = document.getElementById(field);
+            
+            if (errorElement) errorElement.textContent = message;
+            if (inputElement) inputElement.classList.add('error');
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('signup-btn');
+            const loading = document.getElementById('loading');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                loading.style.display = 'block';
+            } else {
+                btn.disabled = false;
+                loading.style.display = 'none';
+            }
+        }
+
+        // Main sign-up handler
+        async function handleSignUp(event) {
+            event.preventDefault();
+            clearErrors();
+            
+            const formData = {
+                firstName: document.getElementById('firstName').value.trim(),
+                lastName: document.getElementById('lastName').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                password: document.getElementById('password').value,
+                country: document.getElementById('country').value,
+                city: document.getElementById('city').value.trim(),
+                postalCode: document.getElementById('postalCode').value.trim(),
+                accountType: selectedAccountType,
+                organizationName: document.getElementById('organizationName')?.value.trim(),
+                website: document.getElementById('website')?.value.trim(),
+                terms: document.getElementById('terms').checked,
+                marketing: document.getElementById('marketing').checked
+            };
+
+            // Validation
+            if (!formData.firstName) {
+                showError('firstName', 'First name is required');
+                return;
+            }
+            if (!formData.lastName) {
+                showError('lastName', 'Last name is required');
+                return;
+            }
+            if (!formData.email) {
+                showError('email', 'Email is required');
+                return;
+            }
+            if (!formData.password || formData.password.length < 6) {
+                showError('password', 'Password must be at least 6 characters');
+                return;
+            }
+            if (!formData.country) {
+                showError('country', 'Please select your country');
+                return;
+            }
+            if (!formData.city) {
+                showError('city', 'City is required');
+                return;
+            }
+            if (!formData.postalCode) {
+                showError('postalCode', 'Postal code is required');
+                return;
+            }
+            if (!formData.terms) {
+                alert('Please accept the Terms of Service to continue');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                if (selectedAccountType === 'customer') {
+                    // Free account creation
+                    await createFreeAccount(formData);
+                } else {
+                    // Paid account creation with Stripe
+                    await createPaidAccount(formData);
+                }
+
+                // Redirect to success page or dashboard
+                window.location.href = 'index.html?welcome=true';
+
+            } catch (error) {
+                setLoading(false);
+                console.error('Sign-up error:', error);
+                
+                if (error.code === 'auth/email-already-in-use') {
+                    showError('email', 'An account with this email already exists');
+                } else if (error.code === 'auth/weak-password') {
+                    showError('password', 'Password is too weak');
+                } else {
+                    alert('Sign-up failed. Please try again.');
+                }
+            }
+        }
+
+        async function createFreeAccount(formData) {
+            // TODO: Replace with actual Firebase Auth account creation
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    console.log('Creating free account:', formData);
+                    resolve();
+                }, 1500);
+            });
+        }
+
+        async function createPaidAccount(formData) {
+            // Check if Stripe is properly initialized
+            if (!stripe || !cardElement) {
+                console.log('Stripe not configured - simulating paid account creation');
+                // Simulate payment processing for demo
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                return;
+            }
+
+            // Create payment method with Stripe
+            const {token, error} = await stripe.createToken(cardElement);
+            
+            if (error) {
+                document.getElementById('card-errors').textContent = error.message;
+                throw error;
+            }
+
+            // TODO: Send to your backend to create subscription
+            const subscriptionData = {
+                ...formData,
+                stripeToken: token.id,
+                priceId: selectedAccountType === 'promoter' ? 'price_promoter_monthly' : 'price_agent_monthly'
+            };
+
+            console.log('Creating paid account with subscription:', subscriptionData);
+            
+            // This would call your Firebase Function to handle Stripe subscription
+            // await createSubscription(subscriptionData);
+        }
+
+        // Navigation functions
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function goToSignIn() {
+            window.location.href = 'signin.html';
+        }
+
+        function showTerms() {
+            alert('📜 Terms of Service page coming soon!\n\nFull terms and conditions will be available here.');
+        }
+
+        function showPrivacy() {
+            alert('🔒 Privacy Policy page coming soon!\n\nDetailed privacy policy will be available here.');
+        }
+
+        // Update postal code label based on country
+        function updateCityPlaceholder() {
+            const country = document.getElementById('country').value;
+            const postalLabel = document.getElementById('postal-label');
+            const postalInput = document.getElementById('postalCode');
+            
+            switch(country) {
+                case 'US':
+                    postalLabel.textContent = 'ZIP Code';
+                    postalInput.placeholder = 'Enter your ZIP code';
+                    break;
+                case 'CA':
+                    postalLabel.textContent = 'Postal Code';
+                    postalInput.placeholder = 'Enter your postal code (A1A 1A1)';
+                    break;
+                case 'GB':
+                    postalLabel.textContent = 'Postcode';
+                    postalInput.placeholder = 'Enter your postcode';
+                    break;
+                case 'AU':
+                    postalLabel.textContent = 'Postcode';
+                    postalInput.placeholder = 'Enter your postcode';
+                    break;
+                default:
+                    postalLabel.textContent = 'Postal Code';
+                    postalInput.placeholder = 'Enter your postal code';
+            }
+        }
+
+        // Initialize page
+        window.addEventListener('load', () => {
+            selectAccountType('customer'); // Default selection
+            loadStripe(); // Load Stripe dynamically
+        });
+    </script>
+</body>
+</html>

@@ -409,7 +409,7 @@
             });
         });
 
-        // Search functionality
+        // Search functionality - UPDATED TO NAVIGATE TO RESULTS PAGE
         function searchEvents(event) {
             event.preventDefault();
             
@@ -423,15 +423,19 @@
                 return;
             }
             
-            // This will eventually connect to your Firebase backend
-            console.log('Searching for events:', {
-                location,
-                dateRange,
-                categories: selectedCategories.length ? selectedCategories : ['All']
+            // Build the search URL with parameters
+            const categoryParam = selectedCategories.length === 0 ? 
+                'All Events' : 
+                selectedCategories.join(',');
+
+            const searchParams = new URLSearchParams({
+                location: location,
+                date: dateRange,
+                categories: categoryParam
             });
-            
-            // Placeholder - will be replaced with real search results
-            alert(`🔍 Searching for events in ${location}!\n\n📅 Date: ${dateRange}\n🎯 Categories: ${selectedCategories.length ? selectedCategories.join(', ') : 'All Events'}\n\n✅ This will show real results once connected to your Firebase backend!`);
+
+            // Navigate to search results page
+            window.location.href = `search-results.html?${searchParams}`;
         }
 
         // Navigation functions
@@ -440,7 +444,7 @@
         }
 
         function showSignIn() {
-            alert('🔐 Sign In page coming soon!\n\nUsers can create accounts to post events and manage their listings.');
+            window.location.href = 'signin.html';
         }
 
         // Initialize location detection when page loads

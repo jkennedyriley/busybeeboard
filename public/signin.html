@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - BusyBee Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+        }
+
+        /* Header Styles - matching your other pages */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-overlay {
+            position: fixed;
+            top: 10px;
+            left: 40px;
+            z-index: 1015;
+        }
+
+        .brand-overlay img {
+            height: 180px;
+            width: auto;
+            transition: opacity 0.2s ease;
+        }
+
+        .brand-overlay a:hover img {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 200px 20px 40px;
+            min-height: 100vh;
+        }
+
+        .signin-container {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .signin-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .signin-title {
+            font-size: 28px;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .signin-subtitle {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .signin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .social-btn:hover {
+            border-color: #FFD700;
+            background: #fffdf0;
+        }
+
+        .social-btn.google {
+            color: #4285f4;
+        }
+
+        .social-btn.facebook {
+            color: #1877f2;
+        }
+
+        .social-btn.apple {
+            color: #000;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider::before {
+            margin-right: 16px;
+        }
+
+        .divider::after {
+            margin-left: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .signin-input {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .signin-input:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .signin-input.error {
+            border-color: #dc3545;
+        }
+
+        .error-message {
+            font-size: 12px;
+            color: #dc3545;
+            margin-top: 4px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 8px;
+        }
+
+        .forgot-password a {
+            color: #666;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .signin-btn {
+            background: #FFD700;
+            border: 2px solid #000;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+
+        .signin-btn:hover {
+            background: #000;
+            color: #FFD700;
+        }
+
+        .signin-btn:disabled {
+            background: #ccc;
+            border-color: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #000;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .brand-overlay {
+                position: relative;
+                top: 0;
+                left: 0;
+                order: -1;
+            }
+
+            .brand-overlay img {
+                height: 100px;
+            }
+
+            .nav-buttons {
+                gap: 8px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 180px 16px 20px;
+            }
+
+            .signin-container {
+                padding: 32px 24px;
+            }
+
+            .signin-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header - matching your other pages -->
+    <header class="header">
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="goToCreateEvent()">Create Event</button>
+            <button class="nav-btn" onclick="goToHome()">← Back to Search</button>
+        </div>
+    </header>
+
+    <div class="brand-overlay">
+        <a href="index.html">
+            <img src="../assets/brandmark.svg" 
+                 alt="BusyBee Board - A FREE community events Board!" 
+                 style="cursor: pointer;"
+                 onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <main class="main-content">
+        <div class="signin-container">
+            <div class="signin-header">
+                <h1 class="signin-title">Welcome back!</h1>
+                <p class="signin-subtitle">Sign in to your BusyBee Board account</p>
+            </div>
+
+            <form class="signin-form" onsubmit="handleSignIn(event)">
+                <!-- Social Login Options -->
+                <div class="social-login">
+                    <button type="button" class="social-btn google" onclick="signInWithGoogle()">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285f4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34a853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#fbbc05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#ea4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        Continue with Google
+                    </button>
+
+                    <button type="button" class="social-btn facebook" onclick="signInWithFacebook()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877f2">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Continue with Facebook
+                    </button>
+
+                    <button type="button" class="social-btn apple" onclick="signInWithApple()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
+                        </svg>
+                        Continue with Apple
+                    </button>
+                </div>
+
+                <div class="divider">or sign in with email</div>
+
+                <!-- Email/Password Login -->
+                <div class="input-group">
+                    <label for="email" class="input-label">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        class="signin-input" 
+                        placeholder="Enter your email"
+                        required
+                    >
+                    <div class="error-message" id="email-error"></div>
+                </div>
+
+                <div class="input-group">
+                    <label for="password" class="input-label">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        class="signin-input" 
+                        placeholder="Enter your password"
+                        required
+                    >
+                    <div class="error-message" id="password-error"></div>
+                    <div class="forgot-password">
+                        <a href="#" onclick="showForgotPassword()">Forgot your password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="signin-btn" id="signin-btn">
+                    Sign In
+                </button>
+
+                <div class="loading" id="loading">
+                    Signing you in...
+                </div>
+            </form>
+
+            <div class="signup-link">
+                Don't have an account? <a href="#" onclick="goToSignUp()">Sign up here</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Form validation and error handling
+        function clearErrors() {
+            document.getElementById('email-error').textContent = '';
+            document.getElementById('password-error').textContent = '';
+            document.getElementById('email').classList.remove('error');
+            document.getElementById('password').classList.remove('error');
+        }
+
+        function showError(field, message) {
+            const errorElement = document.getElementById(`${field}-error`);
+            const inputElement = document.getElementById(field);
+            
+            errorElement.textContent = message;
+            inputElement.classList.add('error');
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('signin-btn');
+            const loading = document.getElementById('loading');
+            
+            if (isLoading) {
+                btn.disabled = true;
+                btn.textContent = 'Signing In...';
+                loading.style.display = 'block';
+            } else {
+                btn.disabled = false;
+                btn.textContent = 'Sign In';
+                loading.style.display = 'none';
+            }
+        }
+
+        // Main sign-in form handler
+        async function handleSignIn(event) {
+            event.preventDefault();
+            clearErrors();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Basic validation
+            if (!email) {
+                showError('email', 'Email is required');
+                return;
+            }
+            
+            if (!password) {
+                showError('password', 'Password is required');
+                return;
+            }
+            
+            setLoading(true);
+            
+            try {
+                // TODO: Replace with actual Firebase Auth sign-in
+                await simulateSignIn(email, password);
+                
+                // Redirect to homepage or dashboard on success
+                window.location.href = 'index.html';
+                
+            } catch (error) {
+                setLoading(false);
+                
+                // Handle specific error types
+                if (error.code === 'auth/user-not-found') {
+                    showError('email', 'No account found with this email');
+                } else if (error.code === 'auth/wrong-password') {
+                    showError('password', 'Incorrect password');
+                } else if (error.code === 'auth/invalid-email') {
+                    showError('email', 'Invalid email address');
+                } else {
+                    showError('email', 'Sign in failed. Please try again.');
+                }
+            }
+        }
+
+        // Social sign-in handlers
+        async function signInWithGoogle() {
+            setLoading(true);
+            
+            try {
+                // TODO: Replace with actual Firebase Auth Google sign-in
+                await simulateGoogleSignIn();
+                window.location.href = 'index.html';
+            } catch (error) {
+                setLoading(false);
+                alert('Google sign-in failed. Please try again.');
+            }
+        }
+
+        async function signInWithFacebook() {
+            setLoading(true);
+            
+            try {
+                // TODO: Replace with actual Firebase Auth Facebook sign-in
+                await simulateFacebookSignIn();
+                window.location.href = 'index.html';
+            } catch (error) {
+                setLoading(false);
+                alert('Facebook sign-in failed. Please try again.');
+            }
+        }
+
+        async function signInWithApple() {
+            setLoading(true);
+            
+            try {
+                // TODO: Replace with actual Firebase Auth Apple sign-in
+                await simulateAppleSignIn();
+                window.location.href = 'index.html';
+            } catch (error) {
+                setLoading(false);
+                alert('Apple sign-in failed. Please try again.');
+            }
+        }
+
+        // Placeholder functions - replace with actual Firebase Auth
+        function simulateSignIn(email, password) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate different outcomes for demo
+                    if (email === 'demo@busybee.com' && password === 'password') {
+                        resolve();
+                    } else {
+                        reject({ code: 'auth/wrong-password' });
+                    }
+                }, 1500);
+            });
+        }
+
+        function simulateGoogleSignIn() {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+        }
+
+        function simulateFacebookSignIn() {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+        }
+
+        function simulateAppleSignIn() {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1000);
+            });
+        }
+
+        // Navigation functions
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
+        function goToCreateEvent() {
+            alert('🎉 Create Event page coming soon!\n\nSign in first to start posting events.');
+        }
+
+        function goToSignUp() {
+            window.location.href = 'signup.html';
+        }
+
+        function showForgotPassword() {
+            alert('🔐 Password Reset coming soon!\n\nYou\'ll be able to reset your password via email.');
+        }
+    </script>
+</body>
+</html>
