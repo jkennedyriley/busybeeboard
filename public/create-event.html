@@ -56,6 +56,7 @@
         .nav-buttons {
             display: flex;
             gap: 16px;
+            align-items: center;
         }
 
         .nav-btn {
@@ -75,6 +76,73 @@
         .nav-btn:hover {
             background: #FFD700;
             border-color: #FFD700;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: 2px solid #000;
+            border-radius: 25px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            min-width: 200px;
+            z-index: 1020;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            display: block;
+            padding: 16px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+            font-weight: 500;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item.current {
+            background: #fffdf0;
+            color: #000;
+            font-weight: 600;
         }
 
         /* Main Content */
@@ -469,6 +537,19 @@
         <div class="nav-buttons">
             <button class="nav-btn" onclick="signOut()">Sign Out</button>
             <button class="nav-btn" onclick="goToHome()">← Back to Search</button>
+            
+            <!-- Hamburger Menu -->
+            <div class="hamburger-menu">
+                <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="my-account.html" class="menu-item">👤 My Account</a>
+                    <a href="my-events.html" class="menu-item">📅 My Events</a>
+                    <a href="create-event.html" class="menu-item current">➕ Create Event</a>
+                    <a href="about-us.html" class="menu-item">ℹ️ About Us</a>
+                    <a href="contact.html" class="menu-item">📞 Contact Us</a>
+                    <a href="legal.html" class="menu-item">📋 Privacy & Terms</a>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -749,6 +830,22 @@
     </main>
 
     <script>
+        // Hamburger menu functionality
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.querySelector('.hamburger-menu');
+            const dropdown = document.getElementById('menuDropdown');
+            
+            if (!menu.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         // Initialize Stripe
         const stripe = Stripe('pk_test_51234567890abcdef'); // Replace with your actual publishable key
         const elements = stripe.elements();
@@ -887,6 +984,18 @@
             return isValid;
         }
 
+        // Navigation functions
+        function signOut() {
+            if (confirm('Are you sure you want to sign out?')) {
+                alert('✅ Signed out successfully!\n\nRedirecting to home page...');
+                window.location.href = 'index.html';
+            }
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
+
         // Form submission
         document.getElementById('event-form').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -905,3 +1014,64 @@
             
             try {
                 if (promotionType !== 'free') {
+                    // Handle payment processing for promoted events
+                    const {token, error} = await stripe.createToken(cardElement);
+                    
+                    if (error) {
+                        document.getElementById('card-errors').textContent = error.message;
+                        throw error;
+                    }
+                    
+                    // TODO: Send to your backend to process payment
+                    console.log('Payment token:', token);
+                }
+                
+                // Collect form data
+                const formData = new FormData();
+                formData.append('eventTitle', document.getElementById('eventTitle').value);
+                formData.append('eventCategory', document.getElementById('eventCategory').value);
+                formData.append('eventDate', document.getElementById('eventDate').value);
+                formData.append('eventTime', document.getElementById('eventTime').value);
+                formData.append('eventDescription', document.getElementById('eventDescription').value);
+                formData.append('venueName', document.getElementById('venueName').value);
+                formData.append('venueAddress', document.getElementById('venueAddress').value);
+                formData.append('venueCity', document.getElementById('venueCity').value);
+                formData.append('venueState', document.getElementById('venueState').value);
+                formData.append('contactPhone', document.getElementById('contactPhone').value);
+                formData.append('eventWebsite', document.getElementById('eventWebsite').value);
+                formData.append('promotionType', promotionType);
+                
+                if (promotionType !== 'free') {
+                    formData.append('ticketingUrl', document.getElementById('ticketingUrl').value);
+                    const photoFile = document.getElementById('eventPhoto').files[0];
+                    if (photoFile) {
+                        formData.append('eventPhoto', photoFile);
+                    }
+                }
+                
+                // TODO: Replace with actual API call
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                alert('✅ Event created successfully!\n\nYour event is being reviewed and will be published shortly.');
+                window.location.href = 'my-events.html';
+                
+            } catch (error) {
+                console.error('Error creating event:', error);
+                alert('❌ There was an error creating your event. Please try again.');
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+
+        // Initialize character counters on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupCharacterCounters();
+            
+            // Set minimum date to today
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('eventDate').setAttribute('min', today);
+        });
+    </script>
+</body>
+</html>

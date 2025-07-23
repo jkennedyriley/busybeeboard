@@ -604,7 +604,645 @@
                 </div>
                 <div class="event-description">
                     ${event.description}
+                </div><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Busy Bee Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles - matching your index.html exactly */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-overlay {
+            position: absolute;
+            top: 10px;
+            left: 40px;
+            z-index: 1015;
+        }
+
+        .brand-overlay img {
+            height: 180px;
+            width: auto;
+            transition: opacity 0.2s ease;
+        }
+
+        .brand-overlay a:hover img {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: 2px solid #000;
+            border-radius: 25px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            min-width: 200px;
+            z-index: 1020;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            display: block;
+            padding: 16px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+            font-weight: 500;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item.current {
+            background: #fffdf0;
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 200px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Search Summary */
+        .search-summary {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-summary h1 {
+            font-size: 28px;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .search-params {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .search-param {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-param strong {
+            color: #000;
+        }
+
+        /* Featured Ads Section */
+        .featured-ads {
+            margin-bottom: 40px;
+        }
+
+        .featured-ads h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 12px;
+            background: #FFD700;
+            border-radius: 8px;
+        }
+
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .featured-ad {
+            background: white;
+            border: 2px solid #FFD700;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(255, 215, 0, 0.2);
+        }
+
+        .featured-ad:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+        }
+
+        .featured-ad-image {
+            height: 140px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .featured-ad-content {
+            padding: 16px;
+        }
+
+        .featured-ad-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .featured-ad-details {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .featured-ad-sponsor {
+            font-size: 12px;
+            color: #FFD700;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Results Section */
+        .results-section {
+            margin-bottom: 40px;
+        }
+
+        .category-header {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #FFD700;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .event-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-image {
+            height: 120px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: #666;
+        }
+
+        .event-content {
+            padding: 16px;
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .event-details {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .event-location {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* New Search Button */
+        .new-search-container {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .new-search-button {
+            background: #FFD700;
+            color: #000;
+            border: 2px solid #000;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .new-search-button:hover {
+            background: #000;
+            color: #FFD700;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .brand-overlay {
+                left: 20px;
+            }
+
+            .brand-overlay img {
+                height: 120px;
+            }
+
+            .main-content {
+                padding: 140px 15px 30px;
+            }
+
+            .search-params {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="nav-buttons">
+            <a href="create-event.html" class="nav-btn">Create Event</a>
+            <a href="signin.html" class="nav-btn">Sign In</a>
+            
+            <!-- Hamburger Menu -->
+            <div class="hamburger-menu">
+                <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="my-account.html" class="menu-item">👤 My Account</a>
+                    <a href="my-events.html" class="menu-item">📅 My Events</a>
+                    <a href="create-event.html" class="menu-item">➕ Create Event</a>
+                    <a href="about-us.html" class="menu-item">ℹ️ About Us</a>
+                    <a href="contact.html" class="menu-item">📞 Contact Us</a>
+                    <a href="legal.html" class="menu-item">📋 Privacy & Terms</a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="brand-overlay">
+        <a href="index.html">
+            <img src="../assets/brandmark.svg" 
+                 alt="BusyBee Board - A FREE community events Board!"
+                 style="cursor: pointer;"
+                 onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <main class="main-content">
+        <!-- Search Summary -->
+        <div class="search-summary">
+            <h1>Search Results</h1>
+            <div class="search-params">
+                <div class="search-param">
+                    <strong>📍 Location:</strong>
+                    <span id="search-location">Greenville, SC</span>
+                </div>
+                <div class="search-param">
+                    <strong>📅 Date:</strong>
+                    <span id="search-date">Today</span>
+                </div>
+                <div class="search-param">
+                    <strong>🎯 Categories:</strong>
+                    <span id="search-categories">All Events</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Ads Section - Only show if there are ads -->
+        <div class="featured-ads" id="featured-ads" style="display: none;">
+            <h2>⭐ Featured Events</h2>
+            <div class="featured-grid" id="featured-grid">
+                <!-- Featured ads will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Results by Category - Only show searched categories -->
+        <div id="results-container">
+            <!-- Results will be populated by JavaScript based on search criteria -->
+        </div>
+
+        <!-- New Search Button -->
+        <div class="new-search-container">
+            <button class="new-search-button" onclick="goToNewSearch()">🔍 New Search</button>
+        </div>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.querySelector('.hamburger-menu');
+            const dropdown = document.getElementById('menuDropdown');
+            
+            if (!menu.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Navigation functions (matching your index.html)
+        function showCreateEvent() {
+            alert('🎉 Create Event page coming soon!\n\nThis will let users post their own events to the platform.');
+        }
+
+        function showSignIn() {
+            window.location.href = 'signin.html';
+        }
+
+        // Search results functions
+        function openFeaturedEvent(url) {
+            // In production, this would open the external URL
+            alert(`🌟 Opening featured event:\n${url}\n\nThis would take you to the advertiser's website.`);
+        }
+
+        function showEventDetails(eventId) {
+            alert(`📅 Event Details #${eventId}\n\nThis would show the full event details page with more information, contact details, and booking options.`);
+        }
+
+        function goToNewSearch() {
+            window.location.href = 'index.html';
+        }
+
+        // Initialize page with search parameters and load results
+        function initializeSearchResults() {
+            // Get search parameters from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            const location = urlParams.get('location') || 'Greenville, SC';
+            const date = urlParams.get('date') || 'Today';
+            const categories = urlParams.get('categories') || 'All Events';
+
+            // Update search summary
+            document.getElementById('search-location').textContent = location;
+            document.getElementById('search-date').textContent = date;
+            document.getElementById('search-categories').textContent = categories;
+
+            // Parse categories into array - only show what user selected
+            const selectedCategories = categories === 'All Events' ? 
+                ['music', 'sports', 'food-drink', 'family', 'arts', 'business'] : 
+                categories.split(',');
+
+            // Load sample results for demo
+            loadSampleResults(selectedCategories);
+        }
+
+        function loadSampleResults(categories) {
+            const container = document.getElementById('results-container');
+            
+            // Sample events data
+            const sampleEvents = {
+                'music': [
+                    { title: 'Summer Jazz Festival', date: 'July 28, 2025', location: 'Main Street Park', emoji: '🎷' },
+                    { title: 'Acoustic Night at The Blue Note', date: 'July 25, 2025', location: 'The Blue Note Cafe', emoji: '🎸' }
+                ],
+                'sports': [
+                    { title: 'Community 5K Run', date: 'July 27, 2025', location: 'Greenville Downtown', emoji: '🏃‍♂️' },
+                    { title: 'Youth Soccer Tournament', date: 'July 30, 2025', location: 'Unity Park', emoji: '⚽' }
+                ],
+                'food-drink': [
+                    { title: 'Food Truck Friday', date: 'July 26, 2025', location: 'Falls Park', emoji: '🌮' },
+                    { title: 'Wine Tasting Event', date: 'July 29, 2025', location: 'Vintage Wine Bar', emoji: '🍷' }
+                ],
+                'family': [
+                    { title: 'Family Movie Night', date: 'July 24, 2025', location: 'Community Center', emoji: '🎬' },
+                    { title: 'Kids Art Workshop', date: 'July 31, 2025', location: 'Public Library', emoji: '🎨' }
+                ],
+                'arts': [
+                    { title: 'Local Artist Exhibition', date: 'July 26, 2025', location: 'Gallery 100', emoji: '🖼️' },
+                    { title: 'Theater Performance', date: 'July 28, 2025', location: 'Peace Center', emoji: '🎭' }
+                ],
+                'business': [
+                    { title: 'Entrepreneur Meetup', date: 'July 25, 2025', location: 'Innovation Hub', emoji: '💼' },
+                    { title: 'Professional Networking Event', date: 'July 30, 2025', location: 'Conference Center', emoji: '🤝' }
+                ]
+            };
+
+            const categoryNames = {
+                'music': '🎵 Music & Concerts',
+                'sports': '⚽ Sports & Fitness',
+                'food-drink': '🍕 Food & Drink',
+                'family': '👨‍👩‍👧‍👦 Family & Kids',
+                'arts': '🎨 Arts & Culture',
+                'business': '💼 Business & Networking'
+            };
+
+            categories.forEach(category => {
+                if (sampleEvents[category]) {
+                    const section = document.createElement('div');
+                    section.className = 'results-section';
+                    
+                    const header = document.createElement('h2');
+                    header.className = 'category-header';
+                    header.textContent = categoryNames[category];
+                    
+                    const grid = document.createElement('div');
+                    grid.className = 'events-grid';
+                    
+                    sampleEvents[category].forEach((event, index) => {
+                        const card = document.createElement('div');
+                        card.className = 'event-card';
+                        card.onclick = () => showEventDetails(`${category}-${index + 1}`);
+                        
+                        card.innerHTML = `
+                            <div class="event-image">${event.emoji}</div>
+                            <div class="event-content">
+                                <div class="event-title">${event.title}</div>
+                                <div class="event-details">📅 ${event.date}</div>
+                                <div class="event-location">📍 ${event.location}</div>
+                            </div>
+                        `;
+                        
+                        grid.appendChild(card);
+                    });
+                    
+                    section.appendChild(header);
+                    section.appendChild(grid);
+                    container.appendChild(section);
+                }
+            });
+
+            // Show featured ads if there are results
+            if (categories.length > 0) {
+                showFeaturedAds();
+            }
+        }
+
+        function showFeaturedAds() {
+            const featuredAds = document.getElementById('featured-ads');
+            const featuredGrid = document.getElementById('featured-grid');
+            
+            // Sample featured ads
+            const ads = [
+                {
+                    title: 'Premium Concert Series',
+                    details: 'VIP seating available',
+                    sponsor: 'EventPro Sponsors',
+                    emoji: '⭐',
+                    url: 'https://example.com/premium-concerts'
+                },
+                {
+                    title: 'Local Business Expo',
+                    details: 'Network with 100+ vendors',
+                    sponsor: 'Chamber of Commerce',
+                    emoji: '🏢',
+                    url: 'https://example.com/business-expo'
+                }
+            ];
+
+            ads.forEach(ad => {
+                const adCard = document.createElement('div');
+                adCard.className = 'featured-ad';
+                adCard.onclick = () => openFeaturedEvent(ad.url);
+                
+                adCard.innerHTML = `
+                    <div class="featured-ad-image">${ad.emoji}</div>
+                    <div class="featured-ad-content">
+                        <div class="featured-ad-title">${ad.title}</div>
+                        <div class="featured-ad-details">${ad.details}</div>
+                        <div class="featured-ad-sponsor">Sponsored by ${ad.sponsor}</div>
+                    </div>
+                `;
+                
+                featuredGrid.appendChild(adCard);
+            });
+
+            featuredAds.style.display = 'block';
+        }
+
+        // Initialize when page loads
+        window.addEventListener('load', initializeSearchResults);
+    </script>
+</body>
+</html>
             `;
 
             return eventCard;

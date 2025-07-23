@@ -15,7 +15,6 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Community Art Workshop - BusyBee Board">
     <meta name="twitter:description" content="Join us for a fun and creative community art workshop! All skill levels welcome - materials provided.">
-    <meta name="twitter:image" content="../assets/event-photos/art-workshop-banner.jpg">
     
     <style>
         * {
@@ -28,12 +27,10 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            color: #000;
+            color: #333;
         }
 
-        /* Header Styles - matching your existing pages */
+        /* Header Styles */
         .header {
             display: flex;
             justify-content: flex-end;
@@ -41,18 +38,13 @@
             padding: 20px 40px;
             background: white;
             border-bottom: 1px solid #f0f0f0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
         }
 
         .brand-overlay {
-            position: fixed;
+            position: absolute;
             top: 10px;
             left: 40px;
-            z-index: 1015;
+            z-index: 15;
         }
 
         .brand-overlay img {
@@ -68,6 +60,7 @@
         .nav-buttons {
             display: flex;
             gap: 16px;
+            align-items: center;
         }
 
         .nav-btn {
@@ -87,75 +80,109 @@
         .nav-btn:hover {
             background: #FFD700;
             border-color: #FFD700;
+            transform: translateY(-2px);
         }
 
-        .nav-btn.primary {
+        /* Hamburger Menu - EXACT COPY from edit-event.html */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: 2px solid #000;
+            border-radius: 25px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .hamburger-btn:hover {
             background: #FFD700;
             border-color: #FFD700;
         }
 
-        .nav-btn.primary:hover {
-            background: #FFA500;
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            min-width: 200px;
+            z-index: 1020;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            display: block;
+            padding: 16px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+            font-weight: 500;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item.current {
+            background: #fffdf0;
+            color: #000;
+            font-weight: 600;
         }
 
         /* Main Content */
         .main-content {
-            flex: 1;
-            padding: 200px 20px 40px;
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
+            margin-top: 120px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        /* Event Hero Section */
+        /* Event Hero */
         .event-hero {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-            margin-bottom: 30px;
+            margin-bottom: 32px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
         }
 
         .event-image {
-            width: 100%;
             height: 300px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        .event-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .event-image .placeholder {
-            text-align: center;
-            color: #000;
-        }
-
-        .event-image .placeholder .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
-            opacity: 0.8;
-        }
-
-        .event-image .placeholder .text {
-            font-size: 18px;
-            font-weight: 600;
         }
 
         .promoted-badge {
             position: absolute;
             top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            color: #000;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 14px;
@@ -163,136 +190,143 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .placeholder {
+            text-align: center;
+            color: #000;
+        }
+
+        .placeholder .icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .placeholder .text {
+            font-size: 24px;
+            font-weight: 600;
         }
 
         .event-content {
-            padding: 40px;
-        }
-
-        .event-header {
-            margin-bottom: 32px;
+            padding: 32px;
         }
 
         .event-category {
-            display: inline-block;
-            background: #f0f0f0;
-            color: #666;
+            background: #e3f2fd;
+            color: #1976d2;
             padding: 6px 12px;
             border-radius: 16px;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: inline-block;
             margin-bottom: 16px;
         }
 
         .event-title {
             font-size: 36px;
-            font-weight: 300;
+            font-weight: 700;
             color: #000;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
             line-height: 1.2;
         }
 
         .event-meta {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 24px;
-            margin-bottom: 32px;
         }
 
         .meta-item {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            font-size: 16px;
-            color: #666;
         }
 
         .meta-icon {
             font-size: 20px;
-            width: 24px;
-            text-align: center;
+            margin-top: 2px;
         }
 
         .meta-content strong {
-            color: #000;
             font-weight: 600;
+            color: #000;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .meta-content span {
+            color: #666;
+            font-size: 14px;
         }
 
         /* Event Details */
         .event-details {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-
-        .details-main {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 32px;
-        }
-
-        .details-section {
+            gap: 32px;
             margin-bottom: 32px;
         }
 
-        .details-section:last-child {
-            margin-bottom: 0;
+        .details-main {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
         }
 
-        .section-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 16px;
-        }
-
-        .event-description {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .contact-item a {
-            color: #000;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .contact-item a:hover {
-            color: #FFD700;
-        }
-
-        /* Sidebar */
         .details-sidebar {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .event-description {
+            line-height: 1.6;
+            color: #444;
+            font-size: 16px;
+        }
+
+        .event-description p {
+            margin-bottom: 16px;
+        }
+
+        .location-info {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .location-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+
+        .location-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .location-item:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Sidebar */
         .sidebar-card {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
         }
 
         .sidebar-title {
@@ -309,31 +343,34 @@
         }
 
         .action-btn {
-            padding: 12px 20px;
-            border: 2px solid #000;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
             background: white;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 600;
-            color: #000;
             cursor: pointer;
             transition: all 0.2s ease;
             text-decoration: none;
+            color: #333;
+            display: block;
             text-align: center;
         }
 
         .action-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
+            background: #f8f9fa;
+            transform: translateY(-1px);
         }
 
         .action-btn.primary {
             background: #FFD700;
             border-color: #FFD700;
+            color: #000;
         }
 
         .action-btn.primary:hover {
             background: #FFA500;
+            border-color: #FFA500;
         }
 
         .share-buttons {
@@ -343,7 +380,7 @@
         }
 
         .share-btn {
-            padding: 8px 12px;
+            padding: 10px 12px;
             border: 1px solid #e0e0e0;
             background: white;
             border-radius: 6px;
@@ -351,10 +388,6 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
         }
 
         .share-btn:hover {
@@ -362,54 +395,48 @@
         }
 
         .event-stats {
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
         .stat-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 14px;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
         }
 
         .stat-label {
             color: #666;
+            font-size: 14px;
         }
 
         .stat-value {
             color: #000;
             font-weight: 600;
-        }
-
-        /* Location Map Placeholder */
-        .location-map {
-            background: #f0f0f0;
-            border-radius: 8px;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
             font-size: 14px;
-            text-align: center;
-            border: 1px solid #e0e0e0;
         }
 
         /* Footer Actions */
         .footer-actions {
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 32px;
             text-align: center;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
         }
 
         .footer-actions h3 {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
             color: #000;
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
 
         .footer-buttons {
@@ -421,85 +448,63 @@
 
         .footer-btn {
             padding: 12px 24px;
-            border: 2px solid #000;
+            border: 2px solid #e0e0e0;
             background: white;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 25px;
+            font-size: 14px;
             font-weight: 600;
-            color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            color: #333;
             text-decoration: none;
+            transition: all 0.2s ease;
         }
 
         .footer-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
+            background: #f8f9fa;
+            transform: translateY(-2px);
         }
 
         .footer-btn.primary {
             background: #FFD700;
             border-color: #FFD700;
+            color: #000;
+        }
+
+        .footer-btn.primary:hover {
+            background: #FFA500;
+            border-color: #FFA500;
         }
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 16px 20px;
-                flex-direction: column;
-                gap: 16px;
+                padding: 15px 20px;
             }
 
             .brand-overlay {
-                position: relative;
-                top: 0;
-                left: 0;
-                order: -1;
+                left: 20px;
             }
 
             .brand-overlay img {
-                height: 100px;
-            }
-
-            .nav-buttons {
-                gap: 8px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-btn {
-                padding: 8px 12px;
-                font-size: 12px;
+                height: 120px;
             }
 
             .main-content {
-                padding: 180px 16px 20px;
-            }
-
-            .event-content {
-                padding: 24px;
+                margin-top: 140px;
+                padding: 20px 15px;
             }
 
             .event-title {
                 font-size: 28px;
             }
 
-            .event-meta {
-                flex-direction: column;
-                gap: 16px;
-            }
-
             .event-details {
                 grid-template-columns: 1fr;
-                gap: 24px;
             }
 
-            .details-main {
-                padding: 24px;
-            }
-
-            .share-buttons {
-                grid-template-columns: 1fr;
+            .details-main,
+            .sidebar-card,
+            .footer-actions {
+                padding: 20px;
             }
 
             .footer-buttons {
@@ -515,13 +520,26 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
+    <!-- Header - with Hamburger Menu -->
+    <div class="header">
         <div class="nav-buttons">
+            <a href="create-event.html" class="nav-btn">Create Event</a>
             <button class="nav-btn" onclick="showSignIn()">Sign In</button>
-            <a href="index.html" class="nav-btn">← Find More Events</a>
+            
+            <!-- Hamburger Menu - EXACT COPY from edit-event.html -->
+            <div class="hamburger-menu">
+                <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="my-account.html" class="menu-item">👤 My Account</a>
+                    <a href="my-events.html" class="menu-item">📅 My Events</a>
+                    <a href="create-event.html" class="menu-item">➕ Create Event</a>
+                    <a href="about-us.html" class="menu-item">ℹ️ About Us</a>
+                    <a href="contact.html" class="menu-item">📞 Contact Us</a>
+                    <a href="legal.html" class="menu-item">📋 Privacy & Terms</a>
+                </div>
+            </div>
         </div>
-    </header>
+    </div>
 
     <div class="brand-overlay">
         <a href="index.html">
@@ -590,45 +608,38 @@
                     <div class="event-description">
                         <p>Join us for a fun and creative community art workshop! We'll be painting together, sharing techniques, and creating beautiful artwork. All skill levels welcome - materials provided.</p>
                         
-                        <p>Come connect with fellow artists and express your creativity in a supportive environment. Whether you're a complete beginner or an experienced artist, you'll find something to inspire you.</p>
+                        <p>Come connect with fellow artists and express your creativity in a supportive environment. Whether you're a beginner or experienced artist, this workshop offers something for everyone.</p>
                         
-                        <p><strong>What's included:</strong></p>
-                        <ul style="margin: 16px 0; padding-left: 20px;">
-                            <li>All painting materials and supplies</li>
-                            <li>Step-by-step guidance from local artists</li>
+                        <p><strong>What's Included:</strong></p>
+                        <ul style="margin-left: 20px; margin-bottom: 16px;">
+                            <li>All art supplies and materials</li>
+                            <li>Professional instruction and guidance</li>
                             <li>Light refreshments</li>
                             <li>Take your artwork home!</li>
                         </ul>
+                        
+                        <p>Please arrive 15 minutes early for check-in. Comfortable clothing recommended as we'll be working with paints.</p>
                     </div>
                 </div>
 
-                <div class="details-section">
-                    <h2 class="section-title">Contact Information</h2>
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <span>📧</span>
-                            <a href="mailto:info@communityart.org">info@communityart.org</a>
+                <div class="location-info">
+                    <h3 class="section-title">📍 Location & Details</h3>
+                    <div class="location-details">
+                        <div class="location-item">
+                            <strong>Venue:</strong>
+                            <span>Downtown Community Center</span>
                         </div>
-                        <div class="contact-item">
-                            <span>📞</span>
-                            <a href="tel:+18645550123">(864) 555-0123</a>
+                        <div class="location-item">
+                            <strong>Address:</strong>
+                            <span>456 Oak Avenue, Greenville, SC 29601</span>
                         </div>
-                        <div class="contact-item">
-                            <span>🌐</span>
-                            <a href="https://communityart.org/workshop" target="_blank" rel="noopener">communityart.org/workshop</a>
+                        <div class="location-item">
+                            <strong>Contact:</strong>
+                            <span>(864) 555-0123</span>
                         </div>
-                    </div>
-                </div>
-
-                <div class="details-section">
-                    <h2 class="section-title">Location</h2>
-                    <div class="location-map">
-                        <div>
-                            <div style="font-weight: 600; margin-bottom: 8px;">📍 Interactive Map</div>
-                            <div>456 Oak Avenue<br>Greenville, SC</div>
-                            <div style="margin-top: 12px; font-size: 12px;">
-                                <a href="https://maps.google.com/?q=456+Oak+Avenue+Greenville+SC" target="_blank" style="color: #000; text-decoration: underline;">Open in Google Maps</a>
-                            </div>
+                        <div class="location-item">
+                            <strong>Directions:</strong>
+                            <a href="https://maps.google.com/?q=456+Oak+Avenue+Greenville+SC" target="_blank" style="color: #000; text-decoration: underline;">Open in Google Maps</a>
                         </div>
                     </div>
                 </div>
@@ -710,6 +721,22 @@
     </main>
 
     <script>
+        // Hamburger menu functionality - EXACT COPY from edit-event.html
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close menu when clicking outside - EXACT COPY from edit-event.html
+        document.addEventListener('click', function(event) {
+            const menu = document.querySelector('.hamburger-menu');
+            const dropdown = document.getElementById('menuDropdown');
+            
+            if (!menu.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
         // Navigation functions
         function showSignIn() {
             window.location.href = 'signin.html';
@@ -741,7 +768,7 @@
         function shareNative() {
             const shareData = {
                 title: 'Community Art Workshop - BusyBee Board',
-                text: 'Check out this community art workshop! Join us for a fun and creative experience.',
+                text: 'Check out this community art workshop!',
                 url: window.location.href
             };
 
@@ -754,53 +781,35 @@
 
         function copyLink() {
             navigator.clipboard.writeText(window.location.href).then(() => {
-                alert('🔗 Event link copied to clipboard!\n\nShare it anywhere to spread the word about this event.');
+                alert('🔗 Event link copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = window.location.href;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('🔗 Event link copied to clipboard!');
             });
         }
 
         function shareEmail() {
-            const subject = encodeURIComponent('Community Art Workshop - April 15, 2025');
-            const body = encodeURIComponent(`Hi! I thought you might be interested in this community art workshop:
-
-Community Art Workshop
-Tuesday, April 15, 2025 at 2:00 PM
-Downtown Community Center, Greenville, SC
-
-${window.location.href}
-
-Hope to see you there!`);
-
+            const subject = encodeURIComponent('Check out this event: Community Art Workshop');
+            const body = encodeURIComponent(`I found this interesting event on BusyBee Board:\n\nCommunity Art Workshop\nApril 15, 2025 at 2:00 PM\nDowntown Community Center\n\n${window.location.href}`);
+            
             window.location.href = `mailto:?subject=${subject}&body=${body}`;
         }
 
         function shareSocial() {
-            const text = encodeURIComponent('Join me at this Community Art Workshop! 🎨');
+            // Simple fallback - in production you'd have specific social media integrations
+            const text = encodeURIComponent('Check out this community art workshop on BusyBee Board!');
             const url = encodeURIComponent(window.location.href);
             
-            // For demo - in production you'd have specific social share buttons
-            const options = [
-                `Facebook: https://www.facebook.com/sharer/sharer.php?u=${url}`,
-                `Twitter: https://twitter.com/intent/tweet?text=${text}&url=${url}`,
-                `LinkedIn: https://www.linkedin.com/sharing/share-offsite/?url=${url}`
-            ];
-
-            alert(`📱 Social Sharing Options:\n\n${options.join('\n\n')}\n\n(In production, these would be direct share buttons)`);
+            // Example Twitter share URL
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
+            window.open(twitterUrl, '_blank', 'width=550,height=450');
         }
-
-        // Initialize page
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load event data based on URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const eventId = urlParams.get('id') || urlParams.get('event');
-            
-            if (eventId) {
-                console.log(`Loading event: ${eventId}`);
-                // In production, fetch event data from Firebase here
-            }
-
-            // Update page title for SEO
-            document.title = 'Community Art Workshop - April 15, 2025 | BusyBee Board';
-        });
     </script>
 </body>
 </html>
