@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upgrade Account - BusyBee Board</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #000;
+        }
+
+        /* Header Styles */
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid #f0f0f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .brand-overlay {
+            position: fixed;
+            top: 10px;
+            left: 40px;
+            z-index: 1015;
+        }
+
+        .brand-overlay img {
+            height: 180px;
+            width: auto;
+            transition: opacity 0.2s ease;
+        }
+
+        .brand-overlay a:hover img {
+            opacity: 0.8;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .nav-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .nav-btn.primary {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .nav-btn.primary:hover {
+            background: #FFA500;
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-btn {
+            background: none;
+            border: 2px solid #000;
+            border-radius: 25px;
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.2s ease;
+        }
+
+        .hamburger-btn:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .menu-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            min-width: 200px;
+            z-index: 1020;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            display: block;
+            padding: 16px 20px;
+            color: #333;
+            text-decoration: none;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s ease;
+            font-weight: 500;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f8f9fa;
+        }
+
+        .menu-item.current {
+            background: #fffdf0;
+            color: #000;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 200px 20px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-title {
+            font-size: 48px;
+            font-weight: 300;
+            color: #000;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .page-subtitle {
+            font-size: 20px;
+            color: #666;
+            line-height: 1.5;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Status Messages */
+        .status-message {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        /* Current Plan */
+        .current-plan {
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .current-plan h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .current-plan p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .current-plan-badge {
+            display: inline-block;
+            background: #FFD700;
+            color: #000;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Billing Toggle */
+        .billing-toggle {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .billing-switch {
+            display: inline-flex;
+            background: #e9ecef;
+            border-radius: 25px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .billing-option {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 20px;
+            background: transparent;
+            color: #666;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .billing-option.active {
+            background: #FFD700;
+            color: #000;
+        }
+
+        .savings-badge {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Plans Grid */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .plan-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+            border-color: #FFD700;
+        }
+
+        .plan-card.selected {
+            border-color: #FFD700;
+            background: #fffbf0;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(255, 215, 0, 0.2);
+        }
+
+        .plan-card.popular {
+            border-color: #FFD700;
+            background: #fffbf0;
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #FFD700;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .plan-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .plan-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .plan-price {
+            margin-bottom: 24px;
+        }
+
+        .price-amount {
+            font-size: 48px;
+            font-weight: 700;
+            color: #000;
+            line-height: 1;
+        }
+
+        .price-currency {
+            font-size: 24px;
+            vertical-align: top;
+        }
+
+        .price-period {
+            font-size: 16px;
+            color: #666;
+            display: block;
+            margin-top: 4px;
+        }
+
+        .price-annual {
+            display: none;
+        }
+
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 32px;
+            text-align: left;
+        }
+
+        .plan-features li {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .plan-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .plan-features .premium-feature {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .plan-features .premium-feature::before {
+            content: "⭐";
+            color: #FFD700;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #FFD700;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #FFA500;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 2px solid #000;
+            color: #000;
+        }
+
+        .btn-secondary:hover {
+            background: #FFD700;
+            border-color: #FFD700;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .plan-btn {
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        /* Payment Section */
+        .payment-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+            display: none;
+            margin-bottom: 60px;
+        }
+
+        .payment-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .payment-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 16px;
+        }
+
+        .payment-summary {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+            padding-top: 16px;
+            border-top: 1px solid #e0e0e0;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .payment-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-input:focus {
+            border-color: #FFD700;
+            outline: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        #card-element {
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background: white;
+            transition: border-color 0.2s ease;
+        }
+
+        #card-element:focus-within {
+            border-color: #FFD700;
+        }
+
+        #card-errors {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Features Comparison */
+        .features-comparison {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 32px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 20px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+            vertical-align: middle;
+        }
+
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #000;
+            font-size: 16px;
+        }
+
+        .comparison-table .feature-name {
+            font-weight: 500;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .comparison-table .check {
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .comparison-table .cross {
+            color: #e74c3c;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .comparison-table .highlight {
+            background: #fffbf0;
+            font-weight: 600;
+            color: #FFD700;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 24px 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            font-size: 18px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            color: #FFD700;
+        }
+
+        .faq-answer {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            display: none;
+            padding-top: 8px;
+        }
+
+        .faq-answer.show {
+            display: block;
+        }
+
+        .faq-toggle {
+            font-size: 20px;
+            color: #666;
+            transition: transform 0.2s ease;
+        }
+
+        .faq-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .brand-overlay {
+                left: 20px;
+            }
+
+            .brand-overlay img {
+                height: 120px;
+            }
+
+            .main-content {
+                padding: 120px 15px 20px;
+            }
+
+            .page-title {
+                font-size: 36px;
+            }
+
+            .page-subtitle {
+                font-size: 18px;
+            }
+
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-card {
+                padding: 24px;
+            }
+
+            .price-amount {
+                font-size: 36px;
+            }
+
+            .payment-section,
+            .features-comparison,
+            .faq-section {
+                padding: 24px 20px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 14px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px 8px;
+            }
+        }
+
+        /* Loading States */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #FFD700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="nav-buttons">
+            <a href="my-account.html" class="nav-btn">My Account</a>
+            <a href="my-events.html" class="nav-btn">My Events</a>
+            
+            <!-- Hamburger Menu -->
+            <div class="hamburger-menu">
+                <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="my-account.html" class="menu-item">👤 My Account</a>
+                    <a href="my-events.html" class="menu-item">📅 My Events</a>
+                    <a href="create-event.html" class="menu-item">➕ Create Event</a>
+                    <a href="upgrade.html" class="menu-item current">⭐ Upgrade Account</a>
+                    <a href="about-us.html" class="menu-item">ℹ️ About Us</a>
+                    <a href="contact.html" class="menu-item">📞 Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand Overlay -->
+    <div class="brand-overlay">
+        <a href="index.html">
+            <img src="../assets/brandmark.svg" 
+                 alt="BusyBee Board - A FREE community events Board!"
+                 style="cursor: pointer;"
+                 onerror="this.style.display='none'">
+        </a>
+    </div>
+
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header fade-in">
+            <h1 class="page-title">Upgrade Your Account</h1>
+            <p class="page-subtitle">
+                Choose the perfect plan to unlock more features, post unlimited events, 
+                and grow your community presence.
+            </p>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="status-message success" id="success-message">
+            ✅ Subscription activated successfully! Welcome to your new plan.
+        </div>
+        <div class="status-message error" id="error-message">
+            ❌ There was an error processing your payment. Please try again.
+        </div>
+
+        <!-- Current Plan -->
+        <div class="current-plan fade-in" id="current-plan">
+            <h2>Your Current Plan</h2>
+            <p>You are currently on the <strong id="current-plan-name">Free User</strong> plan.</p>
+            <div class="current-plan-badge" id="current-plan-badge">Free User</div>
+        </div>
+
+        <!-- Billing Toggle -->
+        <div class="plan-selection fade-in">
+            <div class="billing-toggle">
+                <div class="billing-switch">
+                    <button class="billing-option active" id="monthly-btn" onclick="setBilling('monthly')">
+                        Monthly
+                    </button>
+                    <button class="billing-option" id="annual-btn" onclick="setBilling('annual')">
+                        Annual
+                        <span class="savings-badge">Save 20%</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plans Grid -->
+            <div class="plans-grid">
+                <!-- Free Plan -->
+                <div class="plan-card" id="free-plan">
+                    <div class="plan-icon">🆓</div>
+                    <div class="plan-name">Free User</div>
+                    <div class="plan-description">Perfect for trying out the platform</div>
+                    <div class="plan-price">
+                        <span class="price-amount">
+                            <span class="price-currency">$</span>0
+                        </span>
+                        <span class="price-period">forever</span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Up to 3 events per month</li>
+                        <li>Basic event posting</li>
+                        <li>Community support</li>
+                        <li>Standard search visibility</li>
+                    </ul>
+                    <button class="btn btn-secondary plan-btn" disabled>
+                        Current Plan
+                    </button>
+                </div>
+
+                <!-- Promoter Plan -->
+                <div class="plan-card popular" id="promoter-plan" onclick="selectPlan('promoter')">
+                    <div class="plan-badge">Most Popular</div>
+                    <div class="plan-icon">📢</div>
+                    <div class="plan-name">Promoter</div>
+                    <div class="plan-description">Great for regular event organizers</div>
+                    <div class="plan-price">
+                        <span class="price-monthly">
+                            <span class="price-amount">
+                                <span class="price-currency">$</span>9<span style="font-size: 24px;">.99</span>
+                            </span>
+                            <span class="price-period">per month</span>
+                        </span>
+                        <span class="price-annual" style="display: none;">
+                            <span class="price-amount">
+                                <span class="price-currency">$</span>7<span style="font-size: 24px;">.99</span>
+                            </span>
+                            <span class="price-period">per month (billed annually)</span>
+                        </span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Up to 10 events per month</li>
+                        <li class="premium-feature">2 featured ads per month</li>
+                        <li class="premium-feature">Priority placement</li>
+                        <li class="premium-feature">Event analytics</li>
+                        <li>Email support</li>
+                        <li>Custom event branding</li>
+                    </ul>
+                    <button class="btn btn-primary plan-btn">
+                        Choose Promoter
+                    </button>
+                    <small style="color: #666;">Start your 14-day free trial</small>
+                </div>
+
+                <!-- Agent Plan -->
+                <div class="plan-card" id="agent-plan" onclick="selectPlan('agent')">
+                    <div class="plan-icon">🏢</div>
+                    <div class="plan-name">Agent</div>
+                    <div class="plan-description">Perfect for businesses and organizations</div>
+                    <div class="plan-price">
+                        <span class="price-monthly">
+                            <span class="price-amount">
+                                <span class="price-currency">$</span>24<span style="font-size: 24px;">.99</span>
+                            </span>
+                            <span class="price-period">per month</span>
+                        </span>
+                        <span class="price-annual" style="display: none;">
+                            <span class="price-amount">
+                                <span class="price-currency">$</span>19<span style="font-size: 24px;">.99</span>
+                            </span>
+                            <span class="price-period">per month (billed annually)</span>
+                        </span>
+                    </div>
+                    <ul class="plan-features">
+                        <li class="premium-feature">Unlimited events</li>
+                        <li class="premium-feature">5 featured ads per month</li>
+                        <li class="premium-feature">Top priority placement</li>
+                        <li class="premium-feature">Advanced analytics</li>
+                        <li class="premium-feature">Phone & email support</li>
+                        <li class="premium-feature">Custom branding options</li>
+                        <li class="premium-feature">API access</li>
+                        <li class="premium-feature">Bulk event management</li>
+                    </ul>
+                    <button class="btn btn-primary plan-btn">
+                        Choose Agent
+                    </button>
+                    <small style="color: #666;">Start your 14-day free trial</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Section -->
+        <div class="payment-section" id="payment-section">
+            <div class="payment-header">
+                <h2 class="payment-title">Complete Your Subscription</h2>
+                <p>You're upgrading to the <strong id="selected-plan-name">Promoter</strong> plan</p>
+            </div>
+
+            <!-- Payment Summary -->
+            <div class="payment-summary">
+                <div class="summary-row">
+                    <span>Plan:</span>
+                    <span id="summary-plan">Promoter Monthly</span>
+                </div>
+                <div class="summary-row">
+                    <span>Billing:</span>
+                    <span id="summary-billing">Monthly</span>
+                </div>
+                <div class="summary-row">
+                    <span>Free Trial:</span>
+                    <span>14 days</span>
+                </div>
+                <div class="summary-row">
+                    <span>Total today:</span>
+                    <span>$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Starting <span id="billing-start-date">Aug 8, 2025</span>:</span>
+                    <span id="summary-total">$9.99/month</span>
+                </div>
+            </div>
+
+            <!-- Payment Form -->
+            <form id="payment-form" class="payment-form">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" id="email" class="form-input" value="john.doe@example.com" required readonly>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="first-name">First Name</label>
+                        <input type="text" id="first-name" class="form-input" value="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="last-name">Last Name</label>
+                        <input type="text" id="last-name" class="form-input" value="Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="card-element">Card Information</label>
+                    <div id="card-element">
+                        <!-- Stripe Elements will create form elements here -->
+                    </div>
+                    <div id="card-errors" role="alert"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="billing-address">Billing Address</label>
+                    <input type="text" id="billing-address" class="form-input" placeholder="123 Main Street" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="city">City</label>
+                        <input type="text" id="city" class="form-input" placeholder="Your City" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="zip">ZIP Code</label>
+                        <input type="text" id="zip" class="form-input" placeholder="12345" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full" id="submit-payment">
+                    Start Free Trial
+                </button>
+
+                <p style="text-align: center; font-size: 14px; color: #666; margin-top: 16px;">
+                    By subscribing, you agree to our <a href="legal.html" style="color: #FFD700;">Terms of Service</a> 
+                    and <a href="legal.html" style="color: #FFD700;">Privacy Policy</a>.
+                    You can cancel anytime.
+                </p>
+
+                <div style="text-align: center; margin-top: 24px;">
+                    <button type="button" class="btn btn-secondary" onclick="cancelUpgrade()">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Features Comparison -->
+        <div class="features-comparison fade-in">
+            <h2 class="comparison-title">📊 Feature Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Free</th>
+                        <th>Promoter</th>
+                        <th>Agent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="feature-name">Events per month</td>
+                        <td>3</td>
+                        <td>10</td>
+                        <td class="highlight">Unlimited</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Featured ads</td>
+                        <td class="cross">✗</td>
+                        <td>2/month</td>
+                        <td class="highlight">5/month</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Priority placement</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="check">✓</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Analytics & insights</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="highlight">Advanced</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Custom branding</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                        <td class="highlight">Full customization</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">Support</td>
+                        <td>Community</td>
+                        <td>Email</td>
+                        <td class="highlight">Phone & Email</td>
+                    </tr>
+                    <tr>
+                        <td class="feature-name">API access</td>
+                        <td class="cross">✗</td>
+                        <td class="cross">✗</td>
+                        <td class="check">✓</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section fade-in">
+            <h2 class="faq-title">❓ Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Can I cancel my subscription anytime?
+                    <span class="faq-toggle">↓</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! You can cancel your subscription at any time from your account settings. 
+                    Your plan will remain active until the end of your current billing period.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What happens if I exceed my event limit?
+                    <span class="faq-toggle">↓</span>
+                </div>
+                <div class="faq-answer">
+                    If you reach your monthly event limit, you'll need to wait until the next billing cycle 
+                    or upgrade to a higher plan to post more events.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Do you offer discounts for non-profits?
+                    <span class="faq-toggle">↓</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! We offer special pricing for verified non-profit organizations. 
+                    Contact our support team with your non-profit documentation for details.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    Can I change plans later?
+                    <span class="faq-toggle">↓</span>
+                </div>
+                <div class="faq-answer">
+                    Absolutely! You can upgrade or downgrade your plan at any time. 
+                    Changes take effect immediately, and we'll prorate any billing adjustments.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFaq(this)">
+                    What payment methods do you accept?
+                    <span class="faq-toggle">↓</span>
+                </div>
+                <div class="faq-answer">
+                    We accept all major credit cards (Visa, MasterCard, American Express, Discover) 
+                    and debit cards. All payments are processed securely through Stripe.
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_your_stripe_publishable_key_here'); // TODO: Replace with actual key
+        const elements = stripe.elements();
+        
+        let selectedPlan = null;
+        let billingPeriod = 'monthly';
+        let cardElement = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupStripeElements();
+            loadCurrentPlan();
+            
+            // Check for plan parameter in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const planParam = urlParams.get('plan');
+            if (planParam) {
+                selectPlan(planParam);
+            }
+        });
+
+        // Hamburger menu functionality
+        function toggleMenu() {
+            const dropdown = document.getElementById('menuDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.querySelector('.hamburger-menu');
+            const dropdown = document.getElementById('menuDropdown');
+            
+            if (!menu.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Setup Stripe Elements
+        function setupStripeElements() {
+            const style = {
+                base: {
+                    fontSize: '16px',
+                    color: '#424770',
+                    '::placeholder': {
+                        color: '#aab7c4',
+                    },
+                },
+                invalid: {
+                    color: '#9e2146',
+                },
+            };
+
+            cardElement = elements.create('card', { style: style });
+            cardElement.mount('#card-element');
+
+            cardElement.on('change', function(event) {
+                const displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            // Handle form submission
+            const form = document.getElementById('payment-form');
+            form.addEventListener('submit', handlePaymentSubmit);
+        }
+
+        // Load current plan
+        function loadCurrentPlan() {
+            // TODO: Get actual user plan from Firebase
+            const currentPlan = 'free'; // This would come from user data
+            
+            document.getElementById('current-plan-name').textContent = getPlanDisplayName(currentPlan);
+            document.getElementById('current-plan-badge').textContent = getPlanDisplayName(currentPlan);
+        }
+
+        function getPlanDisplayName(plan) {
+            switch(plan) {
+                case 'promoter': return 'Promoter';
+                case 'agent': return 'Agent';
+                default: return 'Free User';
+            }
+        }
+
+        // Billing period toggle
+        function setBilling(period) {
+            billingPeriod = period;
+            
+            // Update button states
+            document.getElementById('monthly-btn').classList.toggle('active', period === 'monthly');
+            document.getElementById('annual-btn').classList.toggle('active', period === 'annual');
+            
+            // Update pricing display
+            document.querySelectorAll('.price-monthly').forEach(el => {
+                el.style.display = period === 'monthly' ? 'block' : 'none';
+            });
+            document.querySelectorAll('.price-annual').forEach(el => {
+                el.style.display = period === 'annual' ? 'block' : 'none';
+            });
+            
+            // Update payment summary if plan is selected
+            if (selectedPlan) {
+                updatePaymentSummary();
+            }
+        }
+
+        // Plan selection
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            
+            // Update plan card states
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.getElementById(plan + '-plan').classList.add('selected');
+            
+            // Show payment section
+            document.getElementById('payment-section').style.display = 'block';
+            document.getElementById('payment-section').scrollIntoView({ behavior: 'smooth' });
+            
+            // Update payment summary
+            updatePaymentSummary();
+        }
+
+        // Update payment summary
+        function updatePaymentSummary() {
+            const planNames = {
+                'promoter': 'Promoter',
+                'agent': 'Agent'
+            };
+            
+            const prices = {
+                'promoter': { monthly: 9.99, annual: 7.99 },
+                'agent': { monthly: 24.99, annual: 19.99 }
+            };
+            
+            const planName = planNames[selectedPlan];
+            const price = prices[selectedPlan][billingPeriod];
+            const billingText = billingPeriod === 'monthly' ? 'Monthly' : 'Annual';
+            
+            document.getElementById('selected-plan-name').textContent = planName;
+            document.getElementById('summary-plan').textContent = `${planName} ${billingText}`;
+            document.getElementById('summary-billing').textContent = billingText;
+            document.getElementById('summary-total').textContent = `${price}/${billingPeriod === 'monthly' ? 'month' : 'year'}`;
+            
+            // Update billing start date (14 days from now)
+            const startDate = new Date();
+            startDate.setDate(startDate.getDate() + 14);
+            document.getElementById('billing-start-date').textContent = startDate.toLocaleDateString('en-US', { 
+                month: 'short', 
+                day: 'numeric', 
+                year: 'numeric' 
+            });
+        }
+
+        // Handle payment form submission
+        async function handlePaymentSubmit(event) {
+            event.preventDefault();
+            
+            const submitButton = document.getElementById('submit-payment');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="spinner"></span>Processing...';
+            
+            try {
+                // Create payment method
+                const { error, paymentMethod } = await stripe.createPaymentMethod({
+                    type: 'card',
+                    card: cardElement,
+                    billing_details: {
+                        name: `${document.getElementById('first-name').value} ${document.getElementById('last-name').value}`,
+                        email: document.getElementById('email').value,
+                        address: {
+                            line1: document.getElementById('billing-address').value,
+                            city: document.getElementById('city').value,
+                            postal_code: document.getElementById('zip').value,
+                        }
+                    }
+                });
+
+                if (error) {
+                    throw error;
+                }
+
+                // TODO: Send payment method to your backend to create subscription
+                await createSubscription(paymentMethod.id, selectedPlan, billingPeriod);
+                
+                // Show success message
+                showMessage('Subscription created successfully! Welcome to your new plan.', 'success');
+                
+                // Redirect to account page after success
+                setTimeout(() => {
+                    window.location.href = 'my-account.html?upgraded=true';
+                }, 2000);
+                
+            } catch (error) {
+                showMessage(error.message || 'Payment failed. Please try again.', 'error');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Start Free Trial';
+            }
+        }
+
+        // Simulate subscription creation
+        async function createSubscription(paymentMethodId, plan, billing) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    // Simulate API call to backend
+                    console.log('Creating subscription:', { paymentMethodId, plan, billing });
+                    
+                    // Simulate success (in production, handle actual Stripe subscription creation)
+                    if (Math.random() > 0.1) { // 90% success rate for demo
+                        resolve({ subscriptionId: 'sub_' + Math.random().toString(36).substr(2, 9) });
+                    } else {
+                        reject(new Error('Payment method declined. Please try a different card.'));
+                    }
+                }, 2000);
+            });
+        }
+
+        // Cancel upgrade process
+        function cancelUpgrade() {
+            if (confirm('Are you sure you want to cancel the upgrade process?')) {
+                window.location.href = 'my-account.html';
+            }
+        }
+
+        // FAQ toggle functionality
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const toggle = element.querySelector('.faq-toggle');
+            
+            answer.classList.toggle('show');
+            toggle.classList.toggle('open');
+        }
+
+        // Show status messages
+        function showMessage(message, type) {
+            // Hide all messages first
+            document.querySelectorAll('.status-message').forEach(msg => {
+                msg.style.display = 'none';
+            });
+            
+            // Show the appropriate message
+            const messageElement = document.getElementById(type + '-message');
+            messageElement.innerHTML = (type === 'success' ? '✅ ' : '❌ ') + message;
+            messageElement.style.display = 'block';
+            
+            // Scroll to top to show message
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Auto-hide error messages after 10 seconds
+            if (type === 'error') {
+                setTimeout(() => {
+                    messageElement.style.display = 'none';
+                }, 10000);
+            }
+        }
+    </script>
+</body>
+</html>
