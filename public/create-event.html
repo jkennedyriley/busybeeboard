@@ -21,7 +21,7 @@
             color: #000;
         }
 
-        /* Header Styles - matching your existing pages */
+        /* Header Styles - matching other pages (not fixed) */
         .header {
             display: flex;
             justify-content: flex-end;
@@ -29,18 +29,13 @@
             padding: 20px 40px;
             background: white;
             border-bottom: 1px solid #f0f0f0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
         }
 
         .brand-overlay {
-            position: fixed;
+            position: absolute;
             top: 10px;
             left: 40px;
-            z-index: 1015;
+            z-index: 15;
         }
 
         .brand-overlay img {
@@ -60,22 +55,20 @@
         }
 
         .nav-btn {
-            padding: 10px 20px;
-            border: 2px solid #000;
-            background: white;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
+            background: #FFD700;
             color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease;
             text-decoration: none;
-            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
 
         .nav-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
+            background: #FFA500;
+            transform: translateY(-1px);
         }
 
         /* Hamburger Menu */
@@ -145,12 +138,14 @@
             font-weight: 600;
         }
 
-        /* Main Content */
+        /* Main Content - consistent with other pages */
         .main-content {
             flex: 1;
-            padding: 200px 20px 40px;
+            margin-top: 140px;
+            padding: 40px 20px;
             max-width: 1000px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
             width: 100%;
         }
 
@@ -192,22 +187,19 @@
         }
 
         .form-section-title {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
             color: #000;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
-        }
-
-        .form-grid.single-column {
-            grid-template-columns: 1fr;
         }
 
         .input-group {
@@ -226,17 +218,20 @@
             color: #000;
         }
 
-        .form-input, .form-select, .form-textarea {
-            padding: 16px;
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 12px 16px;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
             font-size: 16px;
             background: white;
             transition: border-color 0.2s ease;
-            font-family: inherit;
         }
 
-        .form-input:focus, .form-select:focus, .form-textarea:focus {
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
             border-color: #FFD700;
             outline: none;
         }
@@ -244,68 +239,41 @@
         .form-textarea {
             resize: vertical;
             min-height: 120px;
+            font-family: inherit;
         }
 
         .character-count {
             font-size: 12px;
             color: #666;
             text-align: right;
-            margin-top: 4px;
         }
 
         .error-message {
             color: #e74c3c;
             font-size: 12px;
-            margin-top: 4px;
             display: none;
         }
 
-        /* Promotion Section */
-        .promotion-section {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 30px 0;
-            color: #000;
-        }
-
-        .promotion-header {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .promotion-header h3 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .promotion-header p {
-            font-size: 16px;
-            opacity: 0.8;
-        }
-
+        /* Promotion Options */
         .promotion-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 24px;
+            gap: 24px;
+            margin-top: 24px;
         }
 
         .promotion-option {
-            background: white;
-            border: 2px solid transparent;
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
             padding: 24px;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
+            background: white;
         }
 
         .promotion-option:hover {
             border-color: #FFD700;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: #fffbf0;
         }
 
         .promotion-option.selected {
@@ -313,116 +281,56 @@
             background: #fffbf0;
         }
 
-        .promotion-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            cursor: pointer;
-        }
-
         .promotion-title {
             font-size: 18px;
             font-weight: 600;
+            color: #000;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .promotion-price {
             font-size: 24px;
             font-weight: 700;
-            color: #27ae60;
-            margin-bottom: 8px;
+            color: #FFD700;
+            margin-bottom: 16px;
         }
 
-        .promotion-duration {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 12px;
-        }
-
-        .promotion-benefits {
+        .promotion-features {
             list-style: none;
-            padding: 0;
+            color: #666;
         }
 
-        .promotion-benefits li {
-            font-size: 14px;
-            margin-bottom: 4px;
+        .promotion-features li {
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .promotion-benefits li::before {
+        .promotion-features li:before {
             content: "✓";
-            color: #27ae60;
+            color: #28a745;
             font-weight: bold;
         }
 
-        /* Promoted Event Fields */
-        .promoted-fields {
+        /* Conditional Fields */
+        .conditional-fields {
             display: none;
             margin-top: 24px;
             padding-top: 24px;
             border-top: 1px solid #e0e0e0;
         }
 
-        .promoted-fields.show {
+        .conditional-fields.show {
             display: block;
         }
 
-        .file-upload {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .file-upload input[type="file"] {
-            position: absolute;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-upload-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 24px;
-            border: 2px dashed #e0e0e0;
-            border-radius: 8px;
-            background: #f8f9fa;
-            transition: all 0.2s ease;
-            min-height: 120px;
-        }
-
-        .file-upload:hover .file-upload-label {
-            border-color: #FFD700;
-            background: #fffbf0;
-        }
-
-        .file-preview {
-            margin-top: 12px;
-            text-align: center;
-        }
-
-        .file-preview img {
-            max-width: 200px;
-            max-height: 150px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Submit Button */
+        /* Submit Section */
         .submit-section {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 12px;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
             text-align: center;
         }
@@ -433,7 +341,7 @@
             border: none;
             border-radius: 8px;
             padding: 16px 32px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -442,16 +350,13 @@
 
         .submit-btn:hover {
             background: #FFA500;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.3);
+            transform: translateY(-1px);
         }
 
         .submit-btn:disabled {
             background: #ccc;
-            color: #666;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         .loading {
@@ -461,56 +366,23 @@
             font-size: 14px;
         }
 
-        /* Stripe Elements */
-        .stripe-elements {
-            margin-top: 20px;
-        }
-
-        #card-element {
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-        }
-
-        #card-errors {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 16px 20px;
-                flex-direction: column;
-                gap: 16px;
+                padding: 15px 20px;
             }
 
             .brand-overlay {
-                position: relative;
-                top: 0;
-                left: 0;
-                order: -1;
+                left: 20px;
             }
 
             .brand-overlay img {
-                height: 100px;
-            }
-
-            .nav-buttons {
-                gap: 8px;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .nav-btn {
-                padding: 8px 12px;
-                font-size: 12px;
+                height: 120px;
             }
 
             .main-content {
-                padding: 180px 16px 20px;
+                margin-top: 140px;
+                padding: 20px 15px;
             }
 
             .form-container {
@@ -592,18 +464,14 @@
                             <label for="eventCategory" class="input-label">Category *</label>
                             <select id="eventCategory" class="form-select" required>
                                 <option value="">Select a category</option>
+                                <option value="music-nightlife">🎵 Music & Nightlife</option>
                                 <option value="arts-culture">🎨 Arts & Culture</option>
-                                <option value="business">💼 Business & Networking</option>
-                                <option value="community">🤝 Community & Social</option>
-                                <option value="education">📚 Education & Learning</option>
-                                <option value="family">👨‍👩‍👧‍👦 Family & Kids</option>
-                                <option value="food-drink">🍽️ Food & Drink</option>
                                 <option value="health-wellness">🧘 Health & Wellness</option>
-                                <option value="music">🎵 Music & Entertainment</option>
-                                <option value="outdoor">🏞️ Outdoor & Recreation</option>
-                                <option value="sports">⚽ Sports & Fitness</option>
-                                <option value="technology">💻 Technology</option>
-                                <option value="other">📋 Other</option>
+                                <option value="family-kids">👨‍👩‍👧‍👦 Family & Kids</option>
+                                <option value="markets-popups">🛍️ Markets & Popups</option>
+                                <option value="talks-meetups">💬 Talks & Meetups</option>
+                                <option value="education-workshops">📚 Education & Workshops</option>
+                                <option value="causes-community">🤝 Causes & Community</option>
                             </select>
                             <div class="error-message" id="eventCategory-error"></div>
                         </div>
@@ -678,12 +546,12 @@
                             <div class="error-message" id="venueCity-error"></div>
                         </div>
                         <div class="input-group">
-                            <label for="venueState" class="input-label">State/Province *</label>
+                            <label for="venueState" class="input-label">State *</label>
                             <input 
                                 type="text" 
                                 id="venueState" 
                                 class="form-input" 
-                                placeholder="State or Province"
+                                placeholder="State/Province"
                                 required
                             >
                             <div class="error-message" id="venueState-error"></div>
@@ -691,9 +559,9 @@
                     </div>
                 </div>
 
-                <!-- Additional Information -->
+                <!-- Contact Information -->
                 <div class="form-section">
-                    <h2 class="form-section-title">ℹ️ Additional Information</h2>
+                    <h2 class="form-section-title">📞 Contact Information</h2>
                     <div class="form-grid">
                         <div class="input-group">
                             <label for="contactPhone" class="input-label">Phone Number</label>
@@ -710,130 +578,146 @@
                                 type="url" 
                                 id="eventWebsite" 
                                 class="form-input" 
-                                placeholder="https://yourevent.com"
+                                placeholder="https://your-event-website.com"
                             >
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Promotion Options -->
-            <div class="promotion-section">
-                <div class="promotion-header">
-                    <h3>🚀 Boost Your Event's Visibility</h3>
-                    <p>Get more attendees with promoted listings that appear at the top of search results</p>
-                </div>
-                
-                <div class="promotion-options">
-                    <div class="promotion-option" onclick="selectPromotion('free')">
-                        <input type="radio" name="promotion" value="free" id="promo-free" checked>
-                        <div class="promotion-title">
-                            📝 Standard Listing
+                <!-- Promotion Options -->
+                <div class="form-section">
+                    <h2 class="form-section-title">📢 Promotion Options</h2>
+                    <div class="promotion-options">
+                        <div class="promotion-option selected" data-type="free">
+                            <div class="promotion-title">Free Listing</div>
+                            <div class="promotion-price">$0</div>
+                            <ul class="promotion-features">
+                                <li>Basic event listing</li>
+                                <li>Searchable by location</li>
+                                <li>Standard visibility</li>
+                                <li>Text description only</li>
+                            </ul>
                         </div>
-                        <div class="promotion-price">FREE</div>
-                        <div class="promotion-duration">Listed until event date</div>
-                        <ul class="promotion-benefits">
-                            <li>Appears in search results</li>
-                            <li>Basic event information</li>
-                            <li>Contact details included</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="promotion-option" onclick="selectPromotion('weekly')">
-                        <input type="radio" name="promotion" value="weekly" id="promo-weekly">
-                        <div class="promotion-title">
-                            ⭐ 1-Week Promotion
+                        <div class="promotion-option" data-type="promoted">
+                            <div class="promotion-title">Promoted Event</div>
+                            <div class="promotion-price">$19</div>
+                            <ul class="promotion-features">
+                                <li>Featured placement</li>
+                                <li>Photo upload included</li>
+                                <li>Priority in search results</li>
+                                <li>Enhanced visibility</li>
+                            </ul>
                         </div>
-                        <div class="promotion-price">$1.99</div>
-                        <div class="promotion-duration">Featured for 7 days</div>
-                        <ul class="promotion-benefits">
-                            <li>Top of search results</li>
-                            <li>Featured event badge</li>
-                            <li>Photo upload included</li>
-                            <li>Custom website link</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="promotion-option" onclick="selectPromotion('extended')">
-                        <input type="radio" name="promotion" value="extended" id="promo-extended">
-                        <div class="promotion-title">
-                            🔥 3-Week Promotion
+                        <div class="promotion-option" data-type="premium">
+                            <div class="promotion-title">Premium Spotlight</div>
+                            <div class="promotion-price">$49</div>
+                            <ul class="promotion-features">
+                                <li>Top banner placement</li>
+                                <li>Multiple photos</li>
+                                <li>Social media promotion</li>
+                                <li>Maximum visibility</li>
+                            </ul>
                         </div>
-                        <div class="promotion-price">$2.99</div>
-                        <div class="promotion-duration">Featured for 21 days</div>
-                        <ul class="promotion-benefits">
-                            <li>Extended top placement</li>
-                            <li>Premium featured badge</li>
-                            <li>Photo upload included</li>
-                            <li>Custom website link</li>
-                            <li>Best value for exposure</li>
-                        </ul>
                     </div>
-                </div>
 
-                <!-- Promoted Event Additional Fields -->
-                <div class="promoted-fields" id="promoted-fields">
-                    <div class="form-grid single-column">
-                        <div class="input-group">
-                            <label for="eventPhoto" class="input-label">Event Photo</label>
-                            <div class="file-upload">
-                                <input type="file" id="eventPhoto" accept="image/*" onchange="previewPhoto(this)">
-                                <label for="eventPhoto" class="file-upload-label">
-                                    <span>📷</span>
-                                    <div>
-                                        <div style="font-weight: 600;">Upload Event Photo</div>
-                                        <div style="font-size: 14px; color: #666;">JPG, PNG up to 5MB</div>
-                                    </div>
-                                </label>
+                    <!-- Conditional fields for promoted/premium -->
+                    <div class="conditional-fields" id="promotedFields">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label for="ticketingUrl" class="input-label">Ticketing/Registration URL</label>
+                                <input 
+                                    type="url" 
+                                    id="ticketingUrl" 
+                                    class="form-input" 
+                                    placeholder="https://tickets.example.com"
+                                >
                             </div>
-                            <div class="file-preview" id="photo-preview"></div>
+                            <div class="input-group">
+                                <label for="eventPhoto" class="input-label">Event Photo</label>
+                                <input 
+                                    type="file" 
+                                    id="eventPhoto" 
+                                    class="form-input" 
+                                    accept="image/*"
+                                >
+                            </div>
                         </div>
-                        
-                        <div class="input-group">
-                            <label for="ticketingUrl" class="input-label">Ticketing/More Info URL</label>
-                            <input 
-                                type="url" 
-                                id="ticketingUrl" 
-                                class="form-input" 
-                                placeholder="https://tickets.example.com or https://more-info.com"
-                            >
-                            <small style="color: #666; font-size: 12px;">
-                                This link will be prominently displayed on your promoted listing
-                            </small>
-                        </div>
-                    </div>
-
-                    <!-- Stripe Payment Section -->
-                    <div class="stripe-elements" id="stripe-section" style="display: none;">
-                        <h4 style="margin-bottom: 16px;">💳 Payment Information</h4>
-                        <div id="card-element">
-                            <!-- Stripe Elements will create form elements here -->
-                        </div>
-                        <div id="card-errors" role="alert"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Submit Section -->
             <div class="submit-section">
-                <button type="submit" class="submit-btn" id="submit-btn">
+                <button type="submit" class="submit-btn" id="submitBtn">
                     Create Event
                 </button>
                 <div class="loading" id="loading">
-                    Processing your event...
+                    Creating your event...
                 </div>
-                <p style="margin-top: 16px; color: #666; font-size: 14px;">
-                    By creating an event, you agree to our terms of service and community guidelines.
-                </p>
             </div>
         </form>
     </main>
 
     <script>
-        // Hamburger menu functionality
+        // Promotion option selection
+        document.querySelectorAll('.promotion-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                document.querySelectorAll('.promotion-option').forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Show/hide conditional fields
+                const promotedFields = document.getElementById('promotedFields');
+                const type = this.dataset.type;
+                
+                if (type === 'promoted' || type === 'premium') {
+                    promotedFields.classList.add('show');
+                } else {
+                    promotedFields.classList.remove('show');
+                }
+            });
+        });
+
+        // Character counters
+        function setupCharacterCounters() {
+            const fields = [
+                { id: 'eventTitle', max: 100 },
+                { id: 'eventDescription', max: 500 }
+            ];
+
+            fields.forEach(field => {
+                const input = document.getElementById(field.id);
+                const counter = input.parentElement.querySelector('.character-count');
+                
+                input.addEventListener('input', function() {
+                    const count = this.value.length;
+                    counter.textContent = `${count}/${field.max}`;
+                    
+                    if (count > field.max * 0.9) {
+                        counter.style.color = '#e74c3c';
+                    } else {
+                        counter.style.color = '#666';
+                    }
+                });
+            });
+        }
+
+        // Hamburger menu toggle
         function toggleMenu() {
             const dropdown = document.getElementById('menuDropdown');
             dropdown.classList.toggle('show');
+        }
+
+        // Navigation functions
+        function signOut() {
+            // TODO: Implement sign out logic
+            window.location.href = 'index.html';
+        }
+
+        function goToHome() {
+            window.location.href = 'index.html';
         }
 
         // Close menu when clicking outside
@@ -846,185 +730,20 @@
             }
         });
 
-        // Initialize Stripe
-        const stripe = Stripe('pk_test_51234567890abcdef'); // Replace with your actual publishable key
-        const elements = stripe.elements();
-        let cardElement;
-
-        // Character counters
-        function setupCharacterCounters() {
-            const inputs = [
-                { id: 'eventTitle', max: 100 },
-                { id: 'eventDescription', max: 500 }
-            ];
-
-            inputs.forEach(input => {
-                const element = document.getElementById(input.id);
-                const counter = element.parentNode.querySelector('.character-count');
-                
-                element.addEventListener('input', function() {
-                    const length = this.value.length;
-                    counter.textContent = `${length}/${input.max}`;
-                    
-                    if (length > input.max * 0.9) {
-                        counter.style.color = '#e74c3c';
-                    } else {
-                        counter.style.color = '#666';
-                    }
-                });
-            });
-        }
-
-        // Promotion selection
-        function selectPromotion(type) {
-            // Update radio button
-            document.getElementById(`promo-${type}`).checked = true;
-            
-            // Update visual selection
-            document.querySelectorAll('.promotion-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            event.currentTarget.classList.add('selected');
-            
-            // Show/hide promoted fields and payment
-            const promotedFields = document.getElementById('promoted-fields');
-            const stripeSection = document.getElementById('stripe-section');
-            const submitBtn = document.getElementById('submit-btn');
-            
-            if (type === 'free') {
-                promotedFields.classList.remove('show');
-                stripeSection.style.display = 'none';
-                submitBtn.textContent = 'Create Event';
-            } else {
-                promotedFields.classList.add('show');
-                stripeSection.style.display = 'block';
-                
-                // Initialize Stripe Elements if not already done
-                if (!cardElement) {
-                    cardElement = elements.create('card', {
-                        style: {
-                            base: {
-                                fontSize: '16px',
-                                color: '#424770',
-                                '::placeholder': {
-                                    color: '#aab7c4',
-                                },
-                            },
-                        },
-                    });
-                    cardElement.mount('#card-element');
-                    
-                    cardElement.addEventListener('change', function(event) {
-                        const displayError = document.getElementById('card-errors');
-                        if (event.error) {
-                            displayError.textContent = event.error.message;
-                        } else {
-                            displayError.textContent = '';
-                        }
-                    });
-                }
-                
-                const price = type === 'weekly' ? '$1.99' : '$2.99';
-                submitBtn.textContent = `Create Event (${price})`;
-            }
-        }
-
-        // Photo preview
-        function previewPhoto(input) {
-            const preview = document.getElementById('photo-preview');
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    preview.innerHTML = `
-                        <img src="${e.target.result}" alt="Event photo preview">
-                        <p style="margin-top: 8px; font-size: 12px; color: #666;">Photo selected: ${input.files[0].name}</p>
-                    `;
-                };
-                
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                preview.innerHTML = '';
-            }
-        }
-
-        // Form validation
-        function validateForm() {
-            let isValid = true;
-            
-            // Required fields
-            const requiredFields = [
-                'eventTitle', 'eventCategory', 'eventDate', 'eventTime',
-                'eventDescription', 'venueAddress', 'venueCity', 'venueState'
-            ];
-            
-            requiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                const errorDiv = document.getElementById(`${fieldId}-error`);
-                
-                if (!field.value.trim()) {
-                    errorDiv.textContent = 'This field is required';
-                    errorDiv.style.display = 'block';
-                    isValid = false;
-                } else {
-                    errorDiv.style.display = 'none';
-                }
-            });
-            
-            // Date validation
-            const eventDate = document.getElementById('eventDate').value;
-            if (eventDate && new Date(eventDate) < new Date()) {
-                const errorDiv = document.getElementById('eventDate-error');
-                errorDiv.textContent = 'Event date must be in the future';
-                errorDiv.style.display = 'block';
-                isValid = false;
-            }
-            
-            return isValid;
-        }
-
-        // Navigation functions
-        function signOut() {
-            if (confirm('Are you sure you want to sign out?')) {
-                alert('✅ Signed out successfully!\n\nRedirecting to home page...');
-                window.location.href = 'index.html';
-            }
-        }
-
-        function goToHome() {
-            window.location.href = 'index.html';
-        }
-
         // Form submission
         document.getElementById('event-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            if (!validateForm()) {
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submit-btn');
+            const submitBtn = document.getElementById('submitBtn');
             const loading = document.getElementById('loading');
             
             submitBtn.disabled = true;
             loading.style.display = 'block';
             
-            const promotionType = document.querySelector('input[name="promotion"]:checked').value;
-            
             try {
-                if (promotionType !== 'free') {
-                    // Handle payment processing for promoted events
-                    const {token, error} = await stripe.createToken(cardElement);
-                    
-                    if (error) {
-                        document.getElementById('card-errors').textContent = error.message;
-                        throw error;
-                    }
-                    
-                    // TODO: Send to your backend to process payment
-                    console.log('Payment token:', token);
-                }
+                // Get selected promotion type
+                const selectedPromotion = document.querySelector('.promotion-option.selected');
+                const promotionType = selectedPromotion.dataset.type;
                 
                 // Collect form data
                 const formData = new FormData();

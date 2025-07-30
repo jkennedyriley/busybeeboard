@@ -15,6 +15,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Community Art Workshop - BusyBee Board">
     <meta name="twitter:description" content="Join us for a fun and creative community art workshop! All skill levels welcome - materials provided.">
+    <meta name="twitter:image" content="../assets/event-photos/art-workshop-banner.jpg">
     
     <style>
         * {
@@ -26,11 +27,13 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #f8f9fa;
+            line-height: 1.6;
             min-height: 100vh;
-            color: #333;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Header Styles */
+        /* Header Styles - matching other pages (not fixed) */
         .header {
             display: flex;
             justify-content: flex-end;
@@ -64,26 +67,23 @@
         }
 
         .nav-btn {
-            padding: 10px 20px;
-            border: 2px solid #000;
-            background: white;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
+            background: #FFD700;
             color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease;
             text-decoration: none;
-            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
 
         .nav-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
-            transform: translateY(-2px);
+            background: #FFA500;
+            transform: translateY(-1px);
         }
 
-        /* Hamburger Menu - EXACT COPY from edit-event.html */
+        /* Hamburger Menu */
         .hamburger-menu {
             position: relative;
         }
@@ -150,9 +150,9 @@
             font-weight: 600;
         }
 
-        /* Main Content */
+        /* Main Content - consistent with other pages */
         .main-content {
-            margin-top: 120px;
+            margin-top: 140px;
             padding: 20px;
             max-width: 1200px;
             margin-left: auto;
@@ -288,40 +288,12 @@
         }
 
         .event-description {
+            font-size: 16px;
             line-height: 1.6;
             color: #444;
-            font-size: 16px;
+            margin-bottom: 32px;
         }
 
-        .event-description p {
-            margin-bottom: 16px;
-        }
-
-        .location-info {
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .location-details {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 16px;
-        }
-
-        .location-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .location-item:last-child {
-            margin-bottom: 0;
-        }
-
-        /* Sidebar */
         .sidebar-card {
             background: white;
             border-radius: 16px;
@@ -336,91 +308,88 @@
             margin-bottom: 16px;
         }
 
-        .action-buttons {
+        .organizer-info {
             display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 12px;
+            margin-bottom: 16px;
         }
 
-        .action-btn {
-            padding: 14px 20px;
-            border: 2px solid #e0e0e0;
-            background: white;
+        .organizer-avatar {
+            width: 48px;
+            height: 48px;
+            background: #FFD700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .organizer-details h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .organizer-details span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact-btn {
+            background: #FFD700;
+            color: #000;
+            border: none;
             border-radius: 8px;
+            padding: 12px 20px;
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            text-decoration: none;
-            color: #333;
-            display: block;
-            text-align: center;
+            width: 100%;
         }
 
-        .action-btn:hover {
-            background: #f8f9fa;
+        .contact-btn:hover {
+            background: #FFA500;
             transform: translateY(-1px);
         }
 
-        .action-btn.primary {
-            background: #FFD700;
-            border-color: #FFD700;
+        .venue-info {
+            margin-bottom: 16px;
+        }
+
+        .venue-info h4 {
+            font-size: 16px;
+            font-weight: 600;
             color: #000;
+            margin-bottom: 8px;
         }
 
-        .action-btn.primary:hover {
-            background: #FFA500;
-            border-color: #FFA500;
+        .venue-info p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 4px;
         }
 
-        .share-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .share-btn {
-            padding: 10px 12px;
-            border: 1px solid #e0e0e0;
+        .directions-btn {
             background: white;
-            border-radius: 6px;
-            font-size: 12px;
+            color: #000;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
+            width: 100%;
         }
 
-        .share-btn:hover {
-            background: #f8f9fa;
-        }
-
-        .event-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .stat-row:last-child {
-            border-bottom: none;
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .stat-value {
-            color: #000;
-            font-weight: 600;
-            font-size: 14px;
+        .directions-btn:hover {
+            border-color: #FFD700;
+            background: #fffbf0;
         }
 
         /* Footer Actions */
@@ -428,15 +397,8 @@
             background: white;
             border-radius: 16px;
             padding: 32px;
-            text-align: center;
             box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
-        }
-
-        .footer-actions h3 {
-            font-size: 24px;
-            font-weight: 600;
-            color: #000;
-            margin-bottom: 24px;
+            text-align: center;
         }
 
         .footer-buttons {
@@ -447,31 +409,40 @@
         }
 
         .footer-btn {
-            padding: 12px 24px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 25px;
-            font-size: 14px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
-            text-decoration: none;
+            cursor: pointer;
             transition: all 0.2s ease;
-        }
-
-        .footer-btn:hover {
-            background: #f8f9fa;
-            transform: translateY(-2px);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 160px;
+            justify-content: center;
         }
 
         .footer-btn.primary {
             background: #FFD700;
-            border-color: #FFD700;
             color: #000;
+            border: 2px solid transparent;
         }
 
         .footer-btn.primary:hover {
             background: #FFA500;
-            border-color: #FFA500;
+            transform: translateY(-2px);
+        }
+
+        .footer-btn.secondary {
+            background: white;
+            color: #000;
+            border: 2px solid #e0e0e0;
+        }
+
+        .footer-btn.secondary:hover {
+            border-color: #FFD700;
+            background: #fffbf0;
         }
 
         /* Mobile Responsive */
@@ -526,7 +497,7 @@
             <a href="create-event.html" class="nav-btn">Create Event</a>
             <button class="nav-btn" onclick="showSignIn()">Sign In</button>
             
-            <!-- Hamburger Menu - EXACT COPY from edit-event.html -->
+            <!-- Hamburger Menu -->
             <div class="hamburger-menu">
                 <button class="hamburger-btn" onclick="toggleMenu()">☰</button>
                 <div class="menu-dropdown" id="menuDropdown">
@@ -550,50 +521,51 @@
         </a>
     </div>
 
+    <!-- Main Content -->
     <main class="main-content">
         <!-- Event Hero -->
         <div class="event-hero">
             <div class="event-image">
                 <div class="promoted-badge">
-                    <span>⭐</span>
-                    <span>Promoted Event</span>
+                    ⭐ Promoted Event
                 </div>
-                <!-- Replace with actual image when available -->
                 <div class="placeholder">
                     <div class="icon">🎨</div>
                     <div class="text">Community Art Workshop</div>
                 </div>
-                <!-- Uncomment when you have actual images:
-                <img src="../assets/event-photos/art-workshop-banner.jpg" alt="Community Art Workshop">
-                -->
             </div>
             
             <div class="event-content">
-                <div class="event-header">
-                    <div class="event-category">Arts & Culture</div>
-                    <h1 class="event-title">Community Art Workshop</h1>
-                    
-                    <div class="event-meta">
-                        <div class="meta-item">
-                            <span class="meta-icon">📅</span>
-                            <div class="meta-content">
-                                <strong>April 15, 2025</strong><br>
-                                <span>Tuesday at 2:00 PM</span>
-                            </div>
+                <div class="event-category">🎨 Arts & Culture</div>
+                <h1 class="event-title">Community Art Workshop</h1>
+                
+                <div class="event-meta">
+                    <div class="meta-item">
+                        <div class="meta-icon">📅</div>
+                        <div class="meta-content">
+                            <strong>April 15, 2025</strong>
+                            <span>Tuesday, 2:00 PM - 5:00 PM</span>
                         </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">📍</span>
-                            <div class="meta-content">
-                                <strong>Downtown Community Center</strong><br>
-                                <span>456 Oak Avenue, Greenville, SC</span>
-                            </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">📍</div>
+                        <div class="meta-content">
+                            <strong>Downtown Community Center</strong>
+                            <span>123 Main Street, Downtown</span>
                         </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">👥</span>
-                            <div class="meta-content">
-                                <strong>47 people</strong><br>
-                                <span>viewed this event</span>
-                            </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">💰</div>
+                        <div class="meta-content">
+                            <strong>Free</strong>
+                            <span>All materials provided</span>
+                        </div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-icon">👥</div>
+                        <div class="meta-content">
+                            <strong>25 spots available</strong>
+                            <span>All skill levels welcome</span>
                         </div>
                     </div>
                 </div>
@@ -603,131 +575,88 @@
         <!-- Event Details -->
         <div class="event-details">
             <div class="details-main">
-                <div class="details-section">
-                    <h2 class="section-title">About This Event</h2>
-                    <div class="event-description">
-                        <p>Join us for a fun and creative community art workshop! We'll be painting together, sharing techniques, and creating beautiful artwork. All skill levels welcome - materials provided.</p>
-                        
-                        <p>Come connect with fellow artists and express your creativity in a supportive environment. Whether you're a beginner or experienced artist, this workshop offers something for everyone.</p>
-                        
-                        <p><strong>What's Included:</strong></p>
-                        <ul style="margin-left: 20px; margin-bottom: 16px;">
-                            <li>All art supplies and materials</li>
-                            <li>Professional instruction and guidance</li>
-                            <li>Light refreshments</li>
-                            <li>Take your artwork home!</li>
-                        </ul>
-                        
-                        <p>Please arrive 15 minutes early for check-in. Comfortable clothing recommended as we'll be working with paints.</p>
-                    </div>
-                </div>
-
-                <div class="location-info">
-                    <h3 class="section-title">📍 Location & Details</h3>
-                    <div class="location-details">
-                        <div class="location-item">
-                            <strong>Venue:</strong>
-                            <span>Downtown Community Center</span>
-                        </div>
-                        <div class="location-item">
-                            <strong>Address:</strong>
-                            <span>456 Oak Avenue, Greenville, SC 29601</span>
-                        </div>
-                        <div class="location-item">
-                            <strong>Contact:</strong>
-                            <span>(864) 555-0123</span>
-                        </div>
-                        <div class="location-item">
-                            <strong>Directions:</strong>
-                            <a href="https://maps.google.com/?q=456+Oak+Avenue+Greenville+SC" target="_blank" style="color: #000; text-decoration: underline;">Open in Google Maps</a>
-                        </div>
-                    </div>
+                <h2 class="section-title">About This Event</h2>
+                <div class="event-description">
+                    <p>Join us for a fun and creative community art workshop! We'll be painting together, sharing techniques, and creating beautiful artwork that celebrates our neighborhood.</p>
+                    
+                    <p>This workshop is perfect for artists of all skill levels - whether you're a complete beginner or have been painting for years. Our experienced facilitators will guide you through different techniques and help you create something truly special.</p>
+                    
+                    <p><strong>What's included:</strong></p>
+                    <ul style="margin: 16px 0 16px 24px;">
+                        <li>All art supplies and materials</li>
+                        <li>Canvas or paper for your artwork</li>
+                        <li>Light refreshments and coffee</li>
+                        <li>Take home your finished piece</li>
+                    </ul>
+                    
+                    <p><strong>What to bring:</strong></p>
+                    <ul style="margin: 16px 0 16px 24px;">
+                        <li>Just yourself and your creativity!</li>
+                        <li>Comfortable clothes (we might get a little messy)</li>
+                        <li>A friend if you'd like - it's more fun together</li>
+                    </ul>
+                    
+                    <p>This event is part of our ongoing community engagement series, designed to bring neighbors together through shared creative experiences. We believe art has the power to connect people and build stronger communities.</p>
                 </div>
             </div>
 
-            <!-- Sidebar -->
             <div class="details-sidebar">
-                <!-- Action Buttons -->
+                <!-- Organizer Info -->
                 <div class="sidebar-card">
-                    <h3 class="sidebar-title">Get Involved</h3>
-                    <div class="action-buttons">
-                        <a href="https://communityart.org/workshop/register" class="action-btn primary" target="_blank">
-                            🎟️ Register / Get Tickets
-                        </a>
-                        <button class="action-btn" onclick="addToCalendar()">
-                            📅 Add to Calendar
-                        </button>
-                        <button class="action-btn" onclick="markInterested()">
-                            ❤️ Mark as Interested
-                        </button>
+                    <h3 class="sidebar-title">Organized by</h3>
+                    <div class="organizer-info">
+                        <div class="organizer-avatar">AC</div>
+                        <div class="organizer-details">
+                            <h4>Art Community Collective</h4>
+                            <span>Community Organization</span>
+                        </div>
                     </div>
+                    <button class="contact-btn" onclick="contactOrganizer()">
+                        📧 Contact Organizer
+                    </button>
                 </div>
 
-                <!-- Share Options -->
+                <!-- Venue Info -->
                 <div class="sidebar-card">
-                    <h3 class="sidebar-title">Share This Event</h3>
-                    <div class="share-buttons">
-                        <button class="share-btn" onclick="shareNative()">
-                            📤 Share
-                        </button>
-                        <button class="share-btn" onclick="copyLink()">
-                            🔗 Copy Link
-                        </button>
-                        <button class="share-btn" onclick="shareEmail()">
-                            ✉️ Email
-                        </button>
-                        <button class="share-btn" onclick="shareSocial()">
-                            📱 Social
-                        </button>
+                    <h3 class="sidebar-title">Venue</h3>
+                    <div class="venue-info">
+                        <h4>Downtown Community Center</h4>
+                        <p>123 Main Street</p>
+                        <p>Downtown, State 12345</p>
+                        <p style="margin-top: 12px; color: #666;">Large multipurpose room with natural lighting, accessible entrance, parking available</p>
                     </div>
-                </div>
-
-                <!-- Event Stats -->
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">Event Stats</h3>
-                    <div class="event-stats">
-                        <div class="stat-row">
-                            <span class="stat-label">Views:</span>
-                            <span class="stat-value">47</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">Interested:</span>
-                            <span class="stat-value">12 people</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-label">Posted:</span>
-                            <span class="stat-value">Mar 15, 2025</span>
-                        </div>
-                    </div>
+                    <button class="directions-btn" onclick="getDirections()">
+                        🧭 Get Directions
+                    </button>
                 </div>
             </div>
         </div>
 
         <!-- Footer Actions -->
         <div class="footer-actions">
-            <h3>Discover More Events</h3>
+            <h3 style="margin-bottom: 24px; font-size: 24px;">Interested in this event?</h3>
             <div class="footer-buttons">
-                <a href="search-results.html?category=arts-culture" class="footer-btn">
-                    🎨 More Arts Events
-                </a>
-                <a href="search-results.html?location=Greenville,SC" class="footer-btn">
-                    📍 Events in Greenville
-                </a>
-                <a href="index.html" class="footer-btn primary">
-                    🔍 Search All Events
-                </a>
+                <button class="footer-btn primary" onclick="registerForEvent()">
+                    🎟️ Register (Free)
+                </button>
+                <button class="footer-btn secondary" onclick="saveEvent()">
+                    💾 Save Event
+                </button>
+                <button class="footer-btn secondary" onclick="shareEvent()">
+                    📤 Share Event
+                </button>
             </div>
         </div>
     </main>
 
     <script>
-        // Hamburger menu functionality - EXACT COPY from edit-event.html
+        // Hamburger menu toggle
         function toggleMenu() {
             const dropdown = document.getElementById('menuDropdown');
             dropdown.classList.toggle('show');
         }
 
-        // Close menu when clicking outside - EXACT COPY from edit-event.html
+        // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             const menu = document.querySelector('.hamburger-menu');
             const dropdown = document.getElementById('menuDropdown');
@@ -737,78 +666,46 @@
             }
         });
 
-        // Navigation functions
+        // Event actions
         function showSignIn() {
             window.location.href = 'signin.html';
         }
 
-        // Event interaction functions
-        function addToCalendar() {
-            // Create calendar event data
-            const event = {
-                title: 'Community Art Workshop',
-                start: '20250415T140000',
-                end: '20250415T170000',
-                description: 'Join us for a fun and creative community art workshop! All skill levels welcome - materials provided.',
-                location: 'Downtown Community Center, 456 Oak Avenue, Greenville, SC'
-            };
-
-            // Create Google Calendar URL
-            const googleCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start}/${event.end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`;
-
-            window.open(googleCalUrl, '_blank');
+        function registerForEvent() {
+            // TODO: Implement registration logic
+            alert('🎉 Registration coming soon! For now, please contact the organizer directly.');
         }
 
-        function markInterested() {
-            // In production, this would save to user's profile
-            alert('❤️ Thanks for your interest!\n\nYou\'ll be notified of updates and similar events.\n\n(Sign in functionality coming soon)');
+        function saveEvent() {
+            // TODO: Implement save functionality
+            alert('💾 Event saved! (Feature coming soon)');
         }
 
-        // Sharing functions
-        function shareNative() {
-            const shareData = {
-                title: 'Community Art Workshop - BusyBee Board',
-                text: 'Check out this community art workshop!',
-                url: window.location.href
-            };
+        function contactOrganizer() {
+            // TODO: Implement contact functionality
+            window.location.href = 'mailto:artcommunity@example.com?subject=Question about Community Art Workshop';
+        }
 
+        function getDirections() {
+            // TODO: Implement maps integration
+            const address = '123 Main Street, Downtown, State 12345';
+            const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+            window.open(url, '_blank');
+        }
+
+        function shareEvent() {
             if (navigator.share) {
-                navigator.share(shareData);
+                navigator.share({
+                    title: 'Community Art Workshop - BusyBee Board',
+                    text: 'Check out this community art workshop!',
+                    url: window.location.href
+                });
             } else {
-                copyLink();
+                // Fallback: copy link to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    alert('🔗 Event link copied to clipboard!');
+                });
             }
-        }
-
-        function copyLink() {
-            navigator.clipboard.writeText(window.location.href).then(() => {
-                alert('🔗 Event link copied to clipboard!');
-            }).catch(() => {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = window.location.href;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('🔗 Event link copied to clipboard!');
-            });
-        }
-
-        function shareEmail() {
-            const subject = encodeURIComponent('Check out this event: Community Art Workshop');
-            const body = encodeURIComponent(`I found this interesting event on BusyBee Board:\n\nCommunity Art Workshop\nApril 15, 2025 at 2:00 PM\nDowntown Community Center\n\n${window.location.href}`);
-            
-            window.location.href = `mailto:?subject=${subject}&body=${body}`;
-        }
-
-        function shareSocial() {
-            // Simple fallback - in production you'd have specific social media integrations
-            const text = encodeURIComponent('Check out this community art workshop on BusyBee Board!');
-            const url = encodeURIComponent(window.location.href);
-            
-            // Example Twitter share URL
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${text}&url=${url}`;
-            window.open(twitterUrl, '_blank', 'width=550,height=450');
         }
     </script>
 </body>
