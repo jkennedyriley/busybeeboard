@@ -40,22 +40,19 @@
             align-items: center;
         }
         .nav-btn {
-            padding: 10px 20px;
-            border: 2px solid #000;
-            background: white;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
+            background: #FFD700;
             color: #000;
-            cursor: pointer;
-            transition: all 0.2s ease;
             text-decoration: none;
-            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
         }
         .nav-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
-            transform: translateY(-2px);
+            background: #FFA500;
+            transform: translateY(-1px);
         }
         .hamburger-menu { position: relative; }
         .hamburger-btn {
@@ -191,7 +188,7 @@
                     <a href="my-account.html" class="menu-item">👤 My Account</a>
                     <a href="my-events.html" class="menu-item">📅 My Events</a>
                     <a href="create-event.html" class="menu-item">➕ Create Event</a>
-                    <a href="about.html" class="menu-item">ℹ️ About Us</a>
+                    <a href="about-us.html" class="menu-item">ℹ️ About Us</a>
                     <a href="contact.html" class="menu-item current">📞 Contact Us</a>
                     <a href="legal.html" class="menu-item">📋 Privacy & Terms</a>
                 </div>
@@ -225,17 +222,47 @@
                 <p>
                     You can email us anytime. Our support team will respond promptly to your questions or concerns.
                 </p>
+                <p>
+                    We typically respond within 24 hours during business days (Monday - Friday).
+                </p>
+            </div>
+        </div>
+        <div class="content-section">
+            <h2 class="section-title">
+                <span class="section-icon">💬</span>
+                What We Can Help With
+            </h2>
+            <div class="section-content">
+                <p>
+                    <strong>Event Management:</strong> Creating, editing, or troubleshooting event listings
+                </p>
+                <p>
+                    <strong>Account Support:</strong> Sign-in issues, account settings, or password recovery
+                </p>
+                <p>
+                    <strong>Technical Issues:</strong> Website bugs, mobile app problems, or feature requests
+                </p>
+                <p>
+                    <strong>Community Guidelines:</strong> Questions about our policies or reporting inappropriate content
+                </p>
+                <p>
+                    <strong>General Feedback:</strong> Suggestions for improving BusyBee Board
+                </p>
             </div>
         </div>
     </main>
+
     <script>
         function toggleMenu() {
             const dropdown = document.getElementById('menuDropdown');
             dropdown.classList.toggle('show');
         }
+
+        // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             const menu = document.querySelector('.hamburger-menu');
             const dropdown = document.getElementById('menuDropdown');
+            
             if (!menu.contains(event.target)) {
                 dropdown.classList.remove('show');
             }
