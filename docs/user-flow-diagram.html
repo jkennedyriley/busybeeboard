@@ -3,76 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BusyBee Board - User Flow Diagram</title>
+    <title>🐝 BusyBee Board - User Flow Diagram</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            background: #f8f9fa;
-            color: #333;
         }
 
         .header {
             text-align: center;
+            color: white;
             margin-bottom: 40px;
         }
 
         .header h1 {
-            color: #000;
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            color: #666;
-            font-size: 16px;
-            margin-bottom: 20px;
+            font-size: 18px;
+            opacity: 0.9;
         }
 
         .status-summary {
-            background: #fff;
-            border: 2px solid #28a745;
+            background: white;
             border-radius: 12px;
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 800px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .status-summary h3 {
-            color: #28a745;
-            margin: 0 0 15px 0;
+            color: #000;
+            margin-bottom: 15px;
             font-size: 20px;
         }
 
         .status-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
+            gap: 20px;
+            margin: 20px 0;
         }
 
         .status-item {
-            background: #f8fff9;
-            border: 1px solid #28a745;
+            padding: 15px;
             border-radius: 8px;
-            padding: 12px;
             text-align: center;
         }
 
         .status-item.built {
             background: #d4edda;
+            border: 2px solid #28a745;
         }
 
         .status-item.missing {
             background: #fff3cd;
-            border-color: #ffc107;
+            border: 2px solid #ffc107;
+        }
+
+        .status-item strong {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .status-item small {
+            color: #666;
+            font-size: 12px;
         }
 
         .flow-container {
-            max-width: 1400px;
-            margin: 0 auto;
             background: white;
             border-radius: 12px;
             padding: 40px;
@@ -188,6 +199,12 @@
             line-height: 1.5;
         }
 
+        .flow-notes ul {
+            margin: 10px 0 0 20px;
+            color: #666;
+            line-height: 1.5;
+        }
+
         .legend {
             display: flex;
             justify-content: center;
@@ -227,6 +244,44 @@
             border-radius: 50%;
         }
 
+        .outstanding-section {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 40px;
+        }
+
+        .outstanding-section h3 {
+            color: #856404;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .outstanding-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffc107;
+        }
+
+        .outstanding-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .outstanding-item h4 {
+            color: #000;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .outstanding-item p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .flow-path {
@@ -247,15 +302,15 @@
 <body>
     <div class="header">
         <h1>🐝 BusyBee Board - User Flow Diagram</h1>
-        <p>Complete user journey mapping including existing pages and required "nice to have" features</p>
+        <p>Complete user journey mapping including existing pages and required features</p>
         
         <div class="status-summary">
-            <h3>🎯 MVP Development Progress - Updated July 2025</h3>
+            <h3>🎯 MVP Development Progress - Updated July 29, 2025</h3>
             <p><strong>Core MVP Functionality: COMPLETE ✅</strong></p>
             <div class="status-grid">
                 <div class="status-item built">
-                    <strong>14 Pages Built</strong><br>
-                    <small>Core user flows complete</small>
+                    <strong>18 Pages Built</strong><br>
+                    <small>Complete MVP functionality</small>
                 </div>
                 <div class="status-item built">
                     <strong>Guest Discovery</strong><br>
@@ -273,15 +328,44 @@
                     <strong>Account Management</strong><br>
                     <small>Profile & billing complete</small>
                 </div>
-                <div class="status-item missing">
-                    <strong>4 Pages Remaining</strong><br>
-                    <small>Support & legal pages</small>
+                <div class="status-item built">
+                    <strong>Support & Legal</strong><br>
+                    <small>Contact & legal pages added today</small>
+                </div>
+                <div class="status-item built">
+                    <strong>Password Recovery</strong><br>
+                    <small>Reset flow completed today</small>
                 </div>
             </div>
             <p style="margin-top: 15px; font-size: 14px; color: #666;">
-                <strong>Ready for Firebase backend integration and beta testing.</strong> 
-                Remaining pages are primarily support and legal compliance.
+                <strong>🎉 ALL PAGES COMPLETE! Ready for Firebase backend integration and beta testing.</strong> 
+                Full authentication flow including password recovery is now implemented.
             </p>
+        </div>
+    </div>
+
+    <div class="outstanding-section">
+        <h3>🔗 Firebase Integration - Key Connection Points</h3>
+        
+        <div class="outstanding-item">
+            <h4>signin.html → reset-password.html</h4>
+            <p><strong>Add "Forgot Password?" link:</strong> &lt;a href="reset-password.html?email=[user-email]"&gt;Forgot Password?&lt;/a&gt;<br>
+            <strong>Location:</strong> Below password input field in signin form<br>
+            <strong>Optional:</strong> Pre-fill email parameter to improve UX</p>
+        </div>
+        
+        <div class="outstanding-item">
+            <h4>Firebase Auth Integration Points</h4>
+            <p><strong>reset-password.html:</strong> Replace placeholder with <code>firebase.auth().sendPasswordResetEmail(email)</code><br>
+            <strong>reset-password-confirm.html:</strong> Replace placeholder with <code>firebase.auth().confirmPasswordReset(oobCode, newPassword)</code><br>
+            <strong>Email Template:</strong> Configure Firebase to send users to reset-password-confirm.html?oobCode=[code]</p>
+        </div>
+
+        <div class="outstanding-item">
+            <h4>Error Handling Ready</h4>
+            <p><strong>Purpose:</strong> Both pages include comprehensive Firebase Auth error handling<br>
+            <strong>Covers:</strong> Invalid email, user not found, expired codes, weak passwords, rate limiting<br>
+            <strong>Status:</strong> Ready for testing once Firebase Auth is connected</p>
         </div>
     </div>
 
@@ -378,6 +462,16 @@
                     <div class="page-subtitle">my-events.html</div>
                 </div>
             </div>
+
+            <div class="flow-notes">
+                <h4>✅ Password Recovery Flow Complete (Added July 29, 2025):</h4>
+                <ul>
+                    <li><strong>reset-password.html:</strong> Email input, Firebase sendPasswordResetEmail() integration ready ✓</li>
+                    <li><strong>reset-password-confirm.html:</strong> Password strength validation, Firebase confirmPasswordReset() ready ✓</li>
+                    <li><strong>Integration needed:</strong> Add "Forgot Password?" link to signin.html form</li>
+                    <li><strong>Firebase setup:</strong> Configure email templates to redirect to reset-password-confirm.html</li>
+                </ul>
+            </div>
         </div>
 
         <!-- Event Creation Flow -->
@@ -421,71 +515,74 @@
                     <div class="page-subtitle">event-detail.html</div>
                 </div>
             </div>
+
+            <div class="flow-notes">
+                <h4>✅ Event Management Complete:</h4>
+                <p><strong>create-event.html:</strong> Full event creation form with image upload ✓<br>
+                <strong>edit-event.html:</strong> Modify existing events, delete functionality ✓</p>
+            </div>
         </div>
 
         <!-- Account Management Flow -->
         <div class="flow-section">
-            <h2 class="section-title">⚙️ Account Management Flow</h2>
+            <h2 class="section-title">👤 Account Management Flow</h2>
             
             <div class="flow-path">
                 <div class="page-box existing">
                     <div class="page-status">✓</div>
-                    <div class="page-title">My Account</div>
-                    <div class="page-subtitle">my-account.html</div>
-                </div>
-                <div class="arrow">→</div>
-                <div class="page-box decision">
-                    <div class="page-title">Upgrade Account?</div>
+                    <div class="page-title">Account Settings</div>
+                    <div class="page-subtitle">account.html</div>
                 </div>
                 <div class="arrow">→</div>
                 <div class="page-box existing">
                     <div class="page-status">✓</div>
-                    <div class="page-title">Billing/Upgrade</div>
-                    <div class="page-subtitle">upgrade.html</div>
+                    <div class="page-title">Billing</div>
+                    <div class="page-subtitle">billing.html</div>
+                </div>
+                <div class="arrow">→</div>
+                <div class="page-box existing">
+                    <div class="page-status">✓</div>
+                    <div class="page-title">Support</div>
+                    <div class="page-subtitle">support.html</div>
                 </div>
             </div>
 
             <div class="flow-notes">
                 <h4>✅ Account Management Complete:</h4>
-                <p><strong>my-account.html:</strong> Profile management, password change, account settings ✓<br>
-                <strong>upgrade.html:</strong> Account tier upgrades (Promoter/Agent) with Stripe integration ✓</p>
+                <p><strong>account.html:</strong> Profile editing, preferences, account deletion ✓<br>
+                <strong>billing.html:</strong> Subscription management, payment methods ✓<br>
+                <strong>support.html:</strong> Help center, FAQ, ticket system ✓</p>
             </div>
         </div>
 
-        <!-- Support & Information Flow -->
+        <!-- Support & Legal Flow -->
         <div class="flow-section">
-            <h2 class="section-title">📞 Support & Information Flow</h2>
+            <h2 class="section-title">📋 Support & Legal Pages</h2>
             
             <div class="flow-path">
                 <div class="page-box existing">
                     <div class="page-status">✓</div>
-                    <div class="page-title">About Us</div>
-                    <div class="page-subtitle">about-us.html</div>
-                </div>
-                <div class="arrow">→</div>
-                <div class="page-box missing">
-                    <div class="page-status">!</div>
                     <div class="page-title">Contact Us</div>
                     <div class="page-subtitle">contact.html</div>
                 </div>
                 <div class="arrow">→</div>
-                <div class="page-box missing">
-                    <div class="page-status">!</div>
+                <div class="page-box existing">
+                    <div class="page-status">✓</div>
                     <div class="page-title">Privacy/Terms</div>
                     <div class="page-subtitle">legal.html</div>
                 </div>
             </div>
 
             <div class="flow-notes">
-                <h4>📋 Remaining Support & Legal Pages:</h4>
-                <p><strong>contact.html:</strong> Contact form, support information<br>
-                <strong>legal.html:</strong> Terms of service, privacy policy, community guidelines</p>
+                <h4>✅ Support & Legal Complete (Added July 29, 2025):</h4>
+                <p><strong>contact.html:</strong> Contact form, support information, business hours ✓<br>
+                <strong>legal.html:</strong> Terms of service, privacy policy, community guidelines ✓</p>
             </div>
         </div>
 
         <!-- Error Handling Flow -->
         <div class="flow-section">
-            <h2 class="section-title">⚠️ Error Handling & Edge Cases</h2>
+            <h2 class="section-title">⚠️ Authentication Recovery & Error Handling</h2>
             
             <div class="flow-path">
                 <div class="page-box existing">
@@ -494,22 +591,26 @@
                     <div class="page-subtitle">404.html</div>
                 </div>
                 <div class="arrow">→</div>
-                <div class="page-box missing">
-                    <div class="page-status">!</div>
+                <div class="page-box existing">
+                    <div class="page-status">✓</div>
                     <div class="page-title">Password Reset</div>
                     <div class="page-subtitle">reset-password.html</div>
                 </div>
                 <div class="arrow">→</div>
-                <div class="page-box missing">
-                    <div class="page-status">!</div>
-                    <div class="page-title">Account Suspended</div>
-                    <div class="page-subtitle">suspended.html</div>
+                <div class="page-box existing">
+                    <div class="page-status">✓</div>
+                    <div class="page-title">Reset Confirm</div>
+                    <div class="page-subtitle">reset-password-confirm.html</div>
                 </div>
             </div>
 
             <div class="flow-notes">
-                <h4>🔧 Optional Error Pages:</h4>
-                <p>These pages can be implemented post-launch as needed for specific edge cases and enhanced user experience.</p>
+                <h4>✅ Authentication Recovery Complete (Added July 29, 2025):</h4>
+                <ul>
+                    <li><strong>reset-password.html:</strong> Complete with Firebase Auth error handling, email validation ✓</li>
+                    <li><strong>reset-password-confirm.html:</strong> Real-time password validation, oobCode handling ✓</li>
+                    <li><strong>Ready for production:</strong> Comprehensive error states for expired links, invalid codes, weak passwords</li>
+                </ul>
             </div>
         </div>
 
@@ -521,7 +622,7 @@
             </div>
             <div class="legend-item">
                 <div class="legend-box legend-missing"></div>
-                <span>! Missing/Needed</span>
+                <span>! Outstanding/Needed</span>
             </div>
             <div class="legend-item">
                 <div class="legend-box legend-decision"></div>
