@@ -43,7 +43,7 @@
         .nav-btn {
             padding: 10px 20px;
             border: 2px solid #000;
-            background: white;
+            background: #FFD700;
             border-radius: 25px;
             font-size: 14px;
             font-weight: 600;
@@ -54,8 +54,7 @@
             display: inline-block;
         }
         .nav-btn:hover {
-            background: #FFD700;
-            border-color: #FFD700;
+            background: #FFA500;
             transform: translateY(-2px);
         }
         .hamburger-menu { position: relative; }
@@ -255,14 +254,18 @@
             </div>
         </div>
     </main>
+
     <script>
         function toggleMenu() {
             const dropdown = document.getElementById('menuDropdown');
             dropdown.classList.toggle('show');
         }
+
+        // Close menu when clicking outside
         document.addEventListener('click', function(event) {
             const menu = document.querySelector('.hamburger-menu');
             const dropdown = document.getElementById('menuDropdown');
+            
             if (!menu.contains(event.target)) {
                 dropdown.classList.remove('show');
             }

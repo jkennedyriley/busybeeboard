@@ -31,9 +31,9 @@
 
         .brand-overlay {
             position: absolute;
-            top: 10px;
+            top: 10px;        /* Start higher up in the header */
             left: 40px;
-            z-index: 15;
+            z-index: 15;      /* Higher z-index to overlay the header border */
         }
 
         .brand-overlay img {
@@ -48,20 +48,21 @@
         }
 
         .nav-btn {
-            background: #FFD700;
-            color: #000;
-            text-decoration: none;
             padding: 10px 20px;
+            border: 2px solid #000;
+            background: #FFD700;
             border-radius: 25px;
-            font-weight: 600;
             font-size: 14px;
+            font-weight: 600;
+            color: #000;
+            cursor: pointer;
             transition: all 0.2s ease;
-            border: 2px solid transparent;
+            text-decoration: none;
+            display: inline-block;
         }
 
         .nav-btn:hover {
             background: #FFA500;
-            transform: translateY(-1px);
         }
 
         /* Hamburger Menu */
@@ -131,36 +132,55 @@
             font-weight: 600;
         }
 
-        /* Main Content */
+        /* Main content area */
         .main-content {
             flex: 1;
-            padding: 60px 20px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 140px 20px 40px;
+            text-align: center;
             max-width: 800px;
             margin: 0 auto;
             width: 100%;
         }
 
+        .instant-access {
+            background: #FFD700;
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
         .main-title {
             font-size: 48px;
             font-weight: 300;
-            text-align: center;
             color: #000;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
         }
 
-        .main-subtitle {
-            font-size: 18px;
+        .subtitle {
+            font-size: 20px;
             color: #666;
-            text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
+            line-height: 1.4;
         }
 
+        /* Search form container */
         .search-container {
             background: white;
+            border: 1px solid #e0e0e0;
             border-radius: 16px;
             padding: 32px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 600px;
         }
 
         .search-form {
@@ -172,28 +192,43 @@
         .input-group {
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
             gap: 8px;
         }
 
         .input-label {
             font-size: 14px;
             font-weight: 600;
-            color: #000;
-            text-align: left;
+            color: #333;
         }
 
         .search-input, .search-select {
+            width: 100%;
             padding: 16px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
-            background: white;
             transition: border-color 0.2s ease;
+            background: white;
         }
 
         .search-input:focus, .search-select:focus {
             outline: none;
             border-color: #FFD700;
+        }
+
+        .location-status {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        /* Event categories */
+        .categories-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
         }
 
         .categories-grid {
@@ -225,11 +260,7 @@
             font-weight: 500;
         }
 
-        .category-label.select-all {
-            font-weight: 600;
-            color: #FFD700;
-        }
-
+        /* Search button */
         .search-button {
             background: #FFD700;
             border: 2px solid #000;
@@ -241,6 +272,7 @@
             cursor: pointer;
             transition: all 0.2s ease;
             margin-top: 8px;
+            width: 100%;
         }
 
         .search-button:hover {
@@ -252,29 +284,14 @@
             transform: translateY(1px);
         }
 
-        .location-status {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-            font-style: italic;
-        }
-
-        .bee-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
+        /* Brand icon styling */
+        .brand-overlay a {
             display: block;
+            transition: transform 0.2s ease;
         }
 
-        .instant-access {
-            background: #FFD700;
-            color: #000;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 30px;
-            display: inline-block;
+        .brand-overlay a:hover {
+            transform: scale(1.05);
         }
 
         /* Mobile Responsive */
@@ -336,91 +353,88 @@
     </div>
 
     <main class="main-content">
-        <div class="instant-access">⚡ Instant Access</div>
+        <div class="instant-access">Instant Access • No Signup Required</div>
         
-        <h1 class="main-title">Find Events Anywhere</h1>
-        <p class="main-subtitle">
-            Discover community events, workshops, and gatherings happening around you
-        </p>
+        <h1 class="main-title">Find Events Anywhere for FREE!</h1>
+        <p class="subtitle">Discover music, community events, workshops, and gatherings happening around you</p>
 
         <div class="search-container">
-            <form class="search-form" onsubmit="performSearch(event)">
+            <form class="search-form" onsubmit="searchEvents(event)">
                 <div class="input-group">
-                    <label class="input-label">📍 Location</label>
+                    <label for="location" class="input-label">📍 Location</label>
                     <input 
                         type="text" 
-                        id="location-input" 
+                        id="location" 
                         class="search-input" 
-                        placeholder="Enter city, zip code, or 'Current Location'"
-                        value="Current Location"
+                        placeholder="Enter city or zip code"
+                        readonly
                     >
-                    <div class="location-status" id="location-status">
-                        Location services detected
-                    </div>
+                    <div id="location-status" class="location-status">Detecting your location...</div>
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label">📅 When</label>
-                    <select id="date-select" class="search-select">
+                    <label for="date-range" class="input-label">📅 When</label>
+                    <select id="date-range" class="search-select">
                         <option value="today">Today</option>
                         <option value="tomorrow">Tomorrow</option>
+                        <option value="this-week" selected>This Week</option>
                         <option value="this-weekend">This Weekend</option>
-                        <option value="this-week">This Week</option>
-                        <option value="this-month">This Month</option>
+                        <option value="next-week">Next Week</option>
+                        <option value="next-month">Next Month</option>
                     </select>
                 </div>
 
-                <div class="input-group">
+                <div class="categories-section">
                     <label class="input-label">🎯 Event Categories</label>
                     <div class="categories-grid">
                         <div class="category-item">
-                            <input type="checkbox" id="select-all" class="category-checkbox" onchange="toggleAllCategories()">
-                            <label for="select-all" class="category-label select-all">✨ Select All</label>
+                            <input type="checkbox" id="select-all" class="category-checkbox" onchange="toggleAllCategories(this)">
+                            <label for="select-all" class="category-label">✅ Select All</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="music-nightlife" class="category-checkbox" value="music-nightlife">
-                            <label for="music-nightlife" class="category-label">🎵 Music & Nightlife</label>
+                            <input type="checkbox" id="music" class="category-checkbox" value="music-nightlife">
+                            <label for="music" class="category-label">🎵 Music & Nightlife</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="arts-culture" class="category-checkbox" value="arts-culture">
-                            <label for="arts-culture" class="category-label">🎨 Arts & Culture</label>
+                            <input type="checkbox" id="arts" class="category-checkbox" value="arts-culture">
+                            <label for="arts" class="category-label">🎨 Arts & Culture</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="health-wellness" class="category-checkbox" value="health-wellness">
-                            <label for="health-wellness" class="category-label">🧘 Health & Wellness</label>
+                            <input type="checkbox" id="health" class="category-checkbox" value="health-wellness">
+                            <label for="health" class="category-label">🧘 Health & Wellness</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="family-kids" class="category-checkbox" value="family-kids">
-                            <label for="family-kids" class="category-label">👨‍👩‍👧‍👦 Family & Kids</label>
+                            <input type="checkbox" id="family" class="category-checkbox" value="family-kids">
+                            <label for="family" class="category-label">👨‍👩‍👧‍👦 Family & Kids</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="markets-popups" class="category-checkbox" value="markets-popups">
-                            <label for="markets-popups" class="category-label">🛍️ Markets & Popups</label>
+                            <input type="checkbox" id="markets" class="category-checkbox" value="markets-popups">
+                            <label for="markets" class="category-label">🛍️ Markets & Popups</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="talks-meetups" class="category-checkbox" value="talks-meetups">
-                            <label for="talks-meetups" class="category-label">💬 Talks & Meetups</label>
+                            <input type="checkbox" id="talks" class="category-checkbox" value="talks-meetups">
+                            <label for="talks" class="category-label">💬 Talks & Meetups</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="education-workshops" class="category-checkbox" value="education-workshops">
-                            <label for="education-workshops" class="category-label">📚 Education & Workshops</label>
+                            <input type="checkbox" id="education" class="category-checkbox" value="education-workshops">
+                            <label for="education" class="category-label">📚 Education & Workshops</label>
                         </div>
                         <div class="category-item">
-                            <input type="checkbox" id="causes-community" class="category-checkbox" value="causes-community">
-                            <label for="causes-community" class="category-label">🤝 Causes & Community</label>
+                            <input type="checkbox" id="causes" class="category-checkbox" value="causes-community">
+                            <label for="causes" class="category-label">🤝 Causes & Community</label>
                         </div>
                     </div>
                 </div>
 
                 <button type="submit" class="search-button">
-                    🔍 Search Now
+                    🔍 Find Events
                 </button>
             </form>
         </div>
     </main>
 
     <script>
-        // Hamburger menu toggle
+        // Toggle menu visibility
         function toggleMenu() {
             const dropdown = document.getElementById('menuDropdown');
             dropdown.classList.toggle('show');
@@ -436,9 +450,8 @@
             }
         });
 
-        // Select All functionality
-        function toggleAllCategories() {
-            const selectAllCheckbox = document.getElementById('select-all');
+        // Toggle all categories when "Select All" is clicked
+        function toggleAllCategories(selectAllCheckbox) {
             const categoryCheckboxes = document.querySelectorAll('.category-checkbox:not(#select-all)');
             
             categoryCheckboxes.forEach(checkbox => {
@@ -446,81 +459,79 @@
             });
         }
 
-        // Update Select All based on individual categories
-        function updateSelectAllStatus() {
-            const selectAllCheckbox = document.getElementById('select-all');
-            const categoryCheckboxes = document.querySelectorAll('.category-checkbox:not(#select-all)');
-            const checkedCategories = document.querySelectorAll('.category-checkbox:not(#select-all):checked');
-            
-            if (checkedCategories.length === categoryCheckboxes.length) {
-                selectAllCheckbox.checked = true;
-                selectAllCheckbox.indeterminate = false;
-            } else if (checkedCategories.length > 0) {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = true;
-            } else {
-                selectAllCheckbox.checked = false;
-                selectAllCheckbox.indeterminate = false;
-            }
+        // Toggle category selection visual state
+        function toggleCategory(checkbox) {
+            // Original didn't have this function - categories are just checkboxes
         }
 
-        // Add event listeners to category checkboxes
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryCheckboxes = document.querySelectorAll('.category-checkbox:not(#select-all)');
-            categoryCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateSelectAllStatus);
-            });
+        // Detect user's location
+        function detectLocation() {
+            const locationInput = document.getElementById('location');
+            const locationStatus = document.getElementById('location-status');
 
-            // Check location services
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function(position) {
-                        document.getElementById('location-status').textContent = 'Location services enabled';
-                        document.getElementById('location-input').value = 'Current Location';
+                        // Simulate reverse geocoding - in production use a real service
+                        locationInput.value = 'Greenville, SC';
+                        locationStatus.textContent = '📍 Current location detected';
+                        locationInput.removeAttribute('readonly');
                     },
                     function(error) {
-                        document.getElementById('location-status').textContent = 'Location services disabled - please enter manually';
-                        document.getElementById('location-input').value = '';
-                        document.getElementById('location-input').placeholder = 'Enter city or zip code';
+                        locationInput.value = 'Greenville, SC';
+                        locationStatus.textContent = '📍 Using default location - click to change';
+                        locationInput.removeAttribute('readonly');
                     }
                 );
             } else {
-                document.getElementById('location-status').textContent = 'Location services not supported';
-                document.getElementById('location-input').value = '';
-                document.getElementById('location-input').placeholder = 'Enter city or zip code';
+                locationInput.value = 'Greenville, SC';
+                locationStatus.textContent = '📍 Using default location - click to change';
+                locationInput.removeAttribute('readonly');
             }
-        });
+        }
 
-        // Search functionality
-        function performSearch(event) {
+        // Search events function
+        function searchEvents(event) {
             event.preventDefault();
             
-            const location = document.getElementById('location-input').value.trim();
-            const date = document.getElementById('date-select').value;
-            const selectedCategories = [];
+            const location = document.getElementById('location').value;
+            const dateRange = document.getElementById('date-range').value;
             
             // Get selected categories
-            const categoryCheckboxes = document.querySelectorAll('.category-checkbox:not(#select-all):checked');
-            categoryCheckboxes.forEach(checkbox => {
-                selectedCategories.push(checkbox.value);
-            });
+            const categoryCheckboxes = document.querySelectorAll('.category-checkbox:checked');
+            const selectedCategories = Array.from(categoryCheckboxes).map(cb => cb.value);
             
-            // Validate location
-            if (!location) {
-                alert('Please enter a location to search for events.');
+            if (!location.trim()) {
+                alert('📍 Please enter a location to search for events.');
                 return;
             }
             
-            // Build search URL
+            // Build the search URL with parameters
+            const categoryParam = selectedCategories.length === 0 ? 
+                'All Events' : 
+                selectedCategories.join(',');
+
             const searchParams = new URLSearchParams({
                 location: location,
-                date: date,
-                categories: selectedCategories.length > 0 ? selectedCategories.join(',') : 'all'
+                date: dateRange,
+                categories: categoryParam
             });
-            
-            // Navigate to search results
-            window.location.href = `search-results.html?${searchParams.toString()}`;
+
+            // Navigate to search results page
+            window.location.href = `search-results.html?${searchParams}`;
         }
+
+        // Navigation functions
+        function showCreateEvent() {
+            alert('🎉 Create Event page coming soon!\n\nThis will let users post their own events to the platform.');
+        }
+
+        function showSignIn() {
+            window.location.href = 'signin.html';
+        }
+
+        // Initialize location detection when page loads
+        window.addEventListener('load', detectLocation);
     </script>
 </body>
 </html>
